@@ -3,329 +3,651 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Calendário de Eventos 2026</title>
+<title>Calendário de Eventos 2026 AV</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="data.js"></script>
 <style>
   :root {
-    --bg: #f4f6f9; --card: #ffffff; --ink: #14202e; --muted: #5d6b7c; --line: #e3e8ee;
-    --accent: #1f4e8c; --accent-soft: #e6eef8;
-    --c-prop: #8796ab; --c-feita: #1f7a5c; --c-canc: #c8553d; --c-transf: #d99a2b; --c-and: #3a7bd5; --c-pend: #b8c2cf;
-    --c-part: #1f4e8c;
-    --shadow: 0 1px 2px rgba(20,32,46,.06), 0 4px 16px rgba(20,32,46,.05);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #0f151c; --card: #18212b; --ink: #e8edf3; --muted: #93a1b2; --line: #2a3542;
-      --accent: #7fb0ff; --accent-soft: #1d2b3d;
-      --c-prop: #8796ab; --c-feita: #3fb68b; --c-canc: #e2735c; --c-transf: #e8b04b; --c-and: #6ea4f0; --c-pend: #4d5a69;
-      --c-part: #7fb0ff; --shadow: none;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #0f151c; --card: #18212b; --ink: #e8edf3; --muted: #93a1b2; --line: #2a3542;
-    --accent: #7fb0ff; --accent-soft: #1d2b3d;
-    --c-prop: #8796ab; --c-feita: #3fb68b; --c-canc: #e2735c; --c-transf: #e8b04b; --c-and: #6ea4f0; --c-pend: #4d5a69;
-    --c-part: #7fb0ff; --shadow: none;
+    --font: "Volvo Novum", "Volvo Novum 3.0", "Volvo Novum Medium", Inter, "Segoe UI", system-ui, sans-serif;
+    --navy-900: #071a30; --navy-800: #0b2342; --navy-700: #12325c; --navy-600: #1a4478;
+    --blue: #2f6db5; --sky: #79b4f2; --ice: #dbe9f8;
+    --ink: #f3f7fc; --muted: #a9bbd2; --faint: #6f86a3;
+    --card: rgba(255,255,255,0.06); --card-2: rgba(255,255,255,0.10); --line: rgba(255,255,255,0.12);
+    --feita: #3fc495; --canc: #ef7a62; --transf: #f2b84b; --and: #79b4f2; --pend: #7d8fa8; --prop: #9fb2cc;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 Inter, system-ui, sans-serif; }
-  .wrap { max-width: 1240px; margin: 0 auto; padding: 24px 16px 48px; }
-  header { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; justify-content: space-between; margin-bottom: 20px; }
-  h1 { margin: 0; font-size: 24px; letter-spacing: -.01em; }
-  .sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
-  .filters { display: flex; flex-wrap: wrap; gap: 10px; }
-  label.f { display: flex; flex-direction: column; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); gap: 4px; }
-  select, input[type=search] {
-    font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 8px;
-    padding: 7px 10px; min-width: 160px;
+  html, body { margin: 0; height: 100%; background: var(--navy-900); color: var(--ink); font-family: var(--font); overflow: hidden; }
+  button { font-family: inherit; }
+
+  /* Palco 16:9 escalado para caber na tela */
+  #viewport { position: fixed; inset: 0; background: linear-gradient(135deg, var(--navy-800) 0%, var(--navy-900) 55%, #06152a 100%); }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1600px; height: 900px; transform-origin: center center; }
+  .slide {
+    position: absolute; inset: 0; padding: 104px 96px 80px; overflow: hidden;
+    background: linear-gradient(135deg, var(--navy-800) 0%, var(--navy-900) 55%, #06152a 100%);
+    opacity: 0; visibility: hidden; transform: translateX(40px);
+    transition: opacity .55s ease, transform .55s ease, visibility 0s linear .55s;
   }
-  select:focus, input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .grid { display: grid; gap: 16px; }
-  .kpis { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); margin-bottom: 16px; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow); min-width: 0; }
-  .kpi .lbl { font-size: 12px; color: var(--muted); font-weight: 500; }
-  .kpi .val { font-size: 30px; font-weight: 700; letter-spacing: -.02em; margin-top: 2px; font-variant-numeric: tabular-nums; }
-  .kpi .note { font-size: 12px; color: var(--muted); }
-  .kpi.feita .val { color: var(--c-feita); } .kpi.canc .val { color: var(--c-canc); } .kpi.part .val { color: var(--c-part); }
-  .bar { height: 8px; background: var(--accent-soft); border-radius: 99px; overflow: hidden; margin: 8px 0 4px; }
-  .bar > span { display: block; height: 100%; background: var(--c-feita); border-radius: 99px; }
-  .two { grid-template-columns: 3fr 2fr; margin-bottom: 16px; }
-  .halves { grid-template-columns: 1fr 1fr; margin-bottom: 16px; }
-  @media (max-width: 900px) { .two, .halves { grid-template-columns: 1fr; } }
-  h2 { font-size: 15px; margin: 0 0 2px; }
-  .card .desc { color: var(--muted); font-size: 12px; margin-bottom: 12px; }
-  .chart { position: relative; height: 300px; }
-  .chart.tall { height: 340px; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
-  th { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--card); cursor: pointer; user-select: none; white-space: nowrap; }
+  .slide.active { opacity: 1; visibility: visible; transform: none; transition: opacity .55s ease, transform .55s ease; }
+  .slide.prev { transform: translateX(-40px); }
+  .deco { position: absolute; border-radius: 50%; pointer-events: none; }
+  .deco.a { width: 720px; height: 720px; right: -220px; top: -260px; background: rgba(47,109,181,0.16); }
+  .deco.b { width: 420px; height: 420px; right: 120px; bottom: -260px; background: rgba(121,180,242,0.08); }
+  .deco.c { width: 260px; height: 260px; left: -120px; bottom: -120px; border: 1px solid rgba(121,180,242,0.18); }
+
+  /* Marca e rodapé presentes em todos os slides */
+  .brand { position: absolute; left: 96px; top: 40px; display: flex; align-items: center; gap: 12px; font-size: 17px; font-weight: 600; letter-spacing: .06em; color: var(--ice); opacity: .9; }
+  .brand .mark { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--sky); display: grid; place-items: center; font-size: 12px; font-weight: 800; color: var(--sky); letter-spacing: 0; }
+  .pageno { position: absolute; right: 96px; bottom: 36px; font-size: 14px; color: var(--faint); letter-spacing: .12em; font-variant-numeric: tabular-nums; }
+  .foot { position: absolute; left: 96px; bottom: 36px; font-size: 13px; color: var(--faint); }
+
+  .eyebrow { font-size: 15px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--sky); margin-bottom: 10px; }
+  h2.title { margin: 0 0 26px; font-size: 50px; font-weight: 700; letter-spacing: -.02em; line-height: 1.05; }
+  .hint { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+  .hint::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sky); box-shadow: 0 0 0 4px rgba(121,180,242,.18); }
+
+  /* Animações de entrada */
+  .slide .anim { opacity: 0; transform: translateY(18px); }
+  .slide.active .anim { animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(var(--d, 0) * 90ms + 120ms); }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  /* Capa */
+  .cover { display: flex; flex-direction: column; justify-content: center; height: 100%; padding-bottom: 40px; }
+  .cover .tag { display: inline-block; font-size: 18px; font-weight: 800; letter-spacing: .4em; color: var(--navy-900); background: var(--sky); padding: 8px 16px 8px 22px; border-radius: 6px; margin-bottom: 30px; align-self: flex-start; }
+  .cover h1 { margin: 0; font-size: 104px; line-height: .98; font-weight: 800; letter-spacing: -.035em; }
+  .cover h1 .yr { display: block; color: var(--sky); }
+  .cover .lead { margin-top: 28px; font-size: 24px; color: var(--muted); max-width: 820px; line-height: 1.45; }
+  .chips { display: flex; gap: 16px; margin-top: 52px; }
+  .chip { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 22px; min-width: 210px; }
+  .chip b { display: block; font-size: 34px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .chip span { font-size: 14px; color: var(--muted); }
+  .cover .nav-hint { margin-top: 48px; }
+
+  /* Boxes de KPI com detalhe no hover */
+  .kgrid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 28px; height: 560px; }
+  .kcol { display: grid; grid-template-rows: 1fr 1fr; gap: 28px; }
+  .box { position: relative; border-radius: 22px; background: var(--card); border: 1px solid var(--line); overflow: hidden; cursor: default; transition: transform .3s ease, border-color .3s ease, background .3s ease; }
+  .box:hover, .box.open { transform: translateY(-4px); border-color: rgba(121,180,242,.45); background: var(--card-2); }
+  .box .face { position: absolute; inset: 0; padding: 34px 38px; display: flex; flex-direction: column; transition: opacity .3s ease, transform .3s ease; }
+  .box .detail { position: absolute; inset: 0; padding: 30px 38px; opacity: 0; transform: translateY(14px); transition: opacity .3s ease, transform .3s ease; overflow: auto; }
+  .box:hover .face, .box.open .face { opacity: 0; transform: translateY(-14px); }
+  .box:hover .detail, .box.open .detail { opacity: 1; transform: none; }
+  .box .lbl { font-size: 20px; font-weight: 600; color: var(--muted); }
+  .box .big { font-size: 200px; font-weight: 800; letter-spacing: -.05em; line-height: .95; margin-top: 18px; font-variant-numeric: tabular-nums; }
+  .box .mid { font-size: 104px; font-weight: 800; letter-spacing: -.04em; line-height: 1; margin-top: 10px; font-variant-numeric: tabular-nums; }
+  .box .row { display: flex; gap: 14px; margin-top: auto; flex-wrap: wrap; }
+  .pill { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 999px; background: rgba(255,255,255,.08); font-size: 19px; font-weight: 600; }
+  .pill i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .box .more-hint { position: absolute; right: 26px; top: 26px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); transition: opacity .2s; }
+  .box:hover .more-hint, .box.open .more-hint { opacity: 0; }
+  .box.feita .mid { color: var(--feita); } .box.canc .mid { color: var(--canc); }
+  .box .pct { font-size: 34px; font-weight: 700; margin-left: 14px; color: var(--muted); letter-spacing: -.01em; }
+  .meter { height: 10px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; margin-top: auto; }
+  .meter span { display: block; height: 100%; border-radius: 99px; width: 0; transition: width 1.2s cubic-bezier(.2,.7,.2,1) .3s; }
+  .detail h4 { margin: 0 0 16px; font-size: 15px; letter-spacing: .16em; text-transform: uppercase; color: var(--sky); }
+  .dl { display: grid; grid-template-columns: 1fr auto; gap: 10px 20px; font-size: 19px; }
+  .dl .v { font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+  .dl .k { color: var(--ice); }
+  .detail .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; }
+  .list-sm { margin: 0; padding: 0; list-style: none; font-size: 16px; color: var(--ice); columns: 2; column-gap: 28px; }
+  .list-sm li { padding: 4px 0; break-inside: avoid; }
+  .list-sm li small { color: var(--faint); }
+
+  /* Layout com gráfico + painel lateral */
+  .split { display: grid; grid-template-columns: 1fr 380px; gap: 28px; height: 560px; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 28px 30px; position: relative; min-width: 0; }
+  .chartbox { position: relative; height: 100%; }
+  .chartbox canvas { position: absolute; inset: 0; }
+  .side { display: flex; flex-direction: column; gap: 12px; }
+  .ring { position: relative; height: 190px; margin: 0; }
+  .ring .center { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; pointer-events: none; }
+  .ring .center b { font-size: 54px; font-weight: 800; letter-spacing: -.03em; }
+  .ring .center span { font-size: 14px; color: var(--muted); }
+  .stat { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 17px; }
+  .stat b { font-size: 22px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .stat small { color: var(--muted); font-size: 14px; }
+  .side h3 { margin: 0; font-size: 15px; letter-spacing: .16em; text-transform: uppercase; color: var(--sky); }
+
+  /* Tooltip customizado do gráfico mensal */
+  .ttip { position: absolute; top: 8px; min-width: 330px; max-width: 400px; background: #f6f9fd; color: #0b2342; border-radius: 16px; padding: 18px 20px; box-shadow: 0 18px 50px rgba(0,0,0,.4); pointer-events: none; opacity: 0; transition: opacity .18s ease, left .18s ease; z-index: 5; }
+  .ttip h5 { margin: 0 0 10px; font-size: 22px; font-weight: 800; }
+  .ttip .nums { display: flex; gap: 16px; font-size: 14px; color: #47607f; margin-bottom: 12px; }
+  .ttip .nums b { font-size: 20px; display: block; color: #0b2342; }
+  .ttip .who { border-top: 1px solid #dbe4ef; padding-top: 10px; }
+  .ttip .who .p { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; padding: 6px 0; }
+  .ttip .who .p b { font-size: 15px; }
+  .ttip .who .p .n { font-weight: 800; color: #1f8a63; font-size: 15px; }
+  .ttip .who .p small { grid-column: 1 / -1; color: #5d7391; font-size: 12.5px; line-height: 1.35; }
+  .ttip .t { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #2f6db5; font-weight: 700; margin-bottom: 4px; }
+
+  /* Ranking */
+  .rank { display: flex; flex-direction: column; gap: 14px; }
+  .rank .r { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 12px; }
+  .rank .pos { width: 34px; height: 34px; border-radius: 50%; background: rgba(121,180,242,.16); color: var(--sky); display: grid; place-items: center; font-weight: 800; font-size: 15px; }
+  .rank .nm { font-size: 17px; font-weight: 600; }
+  .rank .nm small { display: block; font-size: 13px; color: var(--muted); font-weight: 400; }
+  .rank .val { font-size: 22px; font-weight: 800; color: var(--feita); font-variant-numeric: tabular-nums; }
+
+  /* Tabela e busca */
+  table { width: 100%; border-collapse: collapse; font-size: 18px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  th { font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
   td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
-  .scroll { max-height: 420px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; }
-  .scroll table { min-width: 560px; }
-  @media (max-width: 760px) { .hide-sm { display: none; } }
-  .pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
-  .p-Realizada { background: color-mix(in srgb, var(--c-feita) 16%, transparent); color: var(--c-feita); }
-  .p-Cancelada { background: color-mix(in srgb, var(--c-canc) 16%, transparent); color: var(--c-canc); }
-  .p-Transferida { background: color-mix(in srgb, var(--c-transf) 18%, transparent); color: var(--c-transf); }
-  .p-Em { background: color-mix(in srgb, var(--c-and) 16%, transparent); color: var(--c-and); }
-  .p-Pendente { background: color-mix(in srgb, var(--c-pend) 30%, transparent); color: var(--muted); }
-  .searchbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-bottom: 12px; }
-  .searchbar input { flex: 1; min-width: 220px; }
-  .total-box { background: var(--accent-soft); border-radius: 10px; padding: 8px 14px; }
-  .total-box b { font-size: 22px; color: var(--accent); font-variant-numeric: tabular-nums; }
-  .total-box span { display: block; font-size: 11px; color: var(--muted); }
-  .resp-table td:first-child { font-weight: 500; }
-  details { margin-top: 16px; color: var(--muted); font-size: 12px; }
-  details summary { cursor: pointer; font-weight: 600; color: var(--ink); }
-  details ul { margin: 8px 0 0; padding-left: 18px; }
-  .empty { padding: 24px; text-align: center; color: var(--muted); }
+  tbody tr { transition: background .2s ease; }
+  tbody tr:hover { background: rgba(255,255,255,.05); }
+  td .bar { display: inline-block; height: 8px; border-radius: 99px; background: var(--feita); vertical-align: middle; margin-right: 10px; }
+  .search { margin-top: 26px; display: grid; grid-template-columns: 1fr 260px; gap: 22px; align-items: stretch; }
+  .sbox { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px 22px; }
+  .sinput { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.07); border: 1px solid var(--line); border-radius: 12px; padding: 0 16px; transition: border-color .2s; }
+  .sinput:focus-within { border-color: var(--sky); }
+  .sinput svg { flex: none; opacity: .7; }
+  .sinput input { flex: 1; background: transparent; border: 0; color: var(--ink); font: inherit; font-size: 19px; padding: 14px 0; outline: none; }
+  .sinput input::placeholder { color: var(--faint); }
+  .results { margin-top: 12px; height: 150px; overflow-y: auto; }
+  .res { display: grid; grid-template-columns: 1fr 120px 160px 130px; gap: 14px; align-items: center; padding: 11px 6px; border-bottom: 1px solid var(--line); font-size: 16.5px; }
+  .res .ev { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .res .m, .res .r { color: var(--muted); font-size: 15px; }
+  .res .q { text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .total { background: linear-gradient(160deg, var(--blue), var(--navy-600)); border-radius: 18px; padding: 22px 24px; display: flex; flex-direction: column; justify-content: center; }
+  .total b { font-size: 54px; font-weight: 800; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+  .total span { font-size: 15px; color: var(--ice); }
+  .tag-s { font-size: 12px; padding: 3px 10px; border-radius: 99px; font-weight: 700; justify-self: start; }
+
+  /* Atendimentos */
+  .hero-num { font-size: 92px; font-weight: 800; letter-spacing: -.04em; line-height: 1; color: var(--sky); font-variant-numeric: tabular-nums; }
+  .hl { background: rgba(255,255,255,.05); border-radius: 14px; padding: 14px 16px; }
+  .hl small { display: block; font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .hl b { font-size: 21px; display: block; margin-top: 4px; }
+  .hl span { font-size: 14px; color: var(--muted); }
+
+  /* Controles (fora do palco) */
+  .ctrl { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; background: rgba(7,26,48,.75); border: 1px solid var(--line); border-radius: 999px; padding: 6px 8px; z-index: 20; }
+  .ctrl button { width: 36px; height: 36px; border-radius: 50%; border: 0; background: transparent; color: var(--ink); cursor: pointer; display: grid; place-items: center; transition: background .2s; }
+  .ctrl button:hover:not(:disabled) { background: rgba(255,255,255,.1); }
+  .ctrl button:disabled { opacity: .3; cursor: default; }
+  .dots { display: flex; gap: 8px; padding: 0 4px; }
+  .dots button { width: 10px; height: 10px; padding: 0; border-radius: 99px; background: rgba(255,255,255,.25); transition: width .3s, background .3s; }
+  .dots button.on { width: 28px; background: var(--sky); }
+  .pdf-btn { position: fixed; top: 16px; right: 18px; z-index: 20; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--line); background: rgba(7,26,48,.75); color: var(--ink); font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s, border-color .2s; }
+  .pdf-btn:hover { background: rgba(47,109,181,.5); border-color: var(--sky); }
+  .pdf-btn:disabled { opacity: .6; cursor: progress; }
+  .progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--sky); transition: width .5s ease; z-index: 20; }
+
+  /* Exportação PDF: sem transições */
+  body.exporting .slide, body.exporting .slide * { transition: none !important; animation: none !important; }
+  body.exporting .slide .anim { opacity: 1; transform: none; }
+  body.exporting .ctrl, body.exporting .pdf-btn, body.exporting .progress { display: none; }
+  body.exporting #stage { left: 0; top: 0; transform: none !important; }
+  .toast { position: fixed; inset: 0; display: none; place-items: center; background: rgba(7,26,48,.88); z-index: 30; font-size: 18px; color: var(--ink); }
+  body.exporting .toast { display: grid; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div>
-      <h1>Calendário de Eventos 2026</h1>
-      <div class="sub" id="sub"></div>
-    </div>
-    <div class="filters">
-      <label class="f">Mês <select id="fMes"></select></label>
-      <label class="f">Responsável <select id="fResp"></select></label>
-      <label class="f">Categoria <select id="fCat"></select></label>
-    </div>
-  </header>
+<div class="progress" id="progress"></div>
+<button class="pdf-btn" id="pdfBtn" title="Baixar a apresentação em PDF">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>
+  Baixar PDF
+</button>
 
-  <section class="grid kpis">
-    <div class="card kpi"><div class="lbl">Tarefas propostas</div><div class="val" id="kProp">–</div><div class="note" id="kPropN"></div></div>
-    <div class="card kpi feita"><div class="lbl">Realizadas</div><div class="val" id="kFeita">–</div><div class="note" id="kFeitaN"></div></div>
-    <div class="card kpi canc"><div class="lbl">Canceladas</div><div class="val" id="kCanc">–</div><div class="note" id="kCancN"></div></div>
-    <div class="card kpi"><div class="lbl">% realizado do ano</div><div class="val" id="kPct">–</div><div class="bar"><span id="kPctBar"></span></div><div class="note" id="kPctN"></div></div>
-    <div class="card kpi part"><div class="lbl">Total de atendimentos</div><div class="val" id="kPart">–</div><div class="note" id="kPartN"></div></div>
-  </section>
+<div id="viewport"><div id="stage">
 
-  <section class="grid two">
-    <div class="card">
-      <h2>Comparativo mensal</h2>
-      <div class="desc">Tarefas propostas × realizadas × canceladas em cada mês</div>
-      <div class="chart tall"><canvas id="chMes"></canvas></div>
-    </div>
-    <div class="card">
-      <h2>Tarefas por responsável</h2>
-      <div class="desc">Quantidade de tarefas sob responsabilidade de cada pessoa, por situação</div>
-      <div class="chart tall"><canvas id="chResp"></canvas></div>
+  <!-- 1. Capa -->
+  <section class="slide" data-title="Capa">
+    <div class="deco a"></div><div class="deco b"></div><div class="deco c"></div>
+    <div class="cover">
+      <span class="tag anim" style="--d:0">META</span>
+      <h1 class="anim" style="--d:1">Calendário de Eventos<span class="yr">2026 AV</span></h1>
+      <p class="lead anim" style="--d:2" id="coverLead"></p>
+      <div class="chips anim" style="--d:3">
+        <div class="chip"><b data-count="prop">0</b><span>tarefas propostas</span></div>
+        <div class="chip"><b data-count="feita">0</b><span>realizadas</span></div>
+        <div class="chip"><b data-count="part">0</b><span>atendimentos</span></div>
+      </div>
+      <div class="nav-hint anim" style="--d:4"><span class="hint">Use as setas ← → do teclado ou os botões abaixo para navegar</span></div>
     </div>
   </section>
 
-  <section class="grid halves">
-    <div class="card">
-      <h2>Atendimentos por mês</h2>
-      <div class="desc">Soma de participantes dos eventos de cada mês</div>
-      <div class="chart"><canvas id="chPart"></canvas></div>
-    </div>
-    <div class="card">
-      <h2>Resumo por responsável</h2>
-      <div class="desc">Tarefas, conclusão e pessoas atendidas</div>
-      <div class="scroll" style="max-height:300px">
-        <table class="resp-table"><thead><tr><th>Responsável</th><th class="n">Tarefas</th><th class="n">Realizadas</th><th class="n">Canceladas</th><th class="n">% feito</th><th class="n">Atendimentos</th></tr></thead><tbody id="tResp"></tbody></table>
+  <!-- 2. Números -->
+  <section class="slide" data-title="Números">
+    <div class="eyebrow anim" style="--d:0">Visão geral do ano</div>
+    <h2 class="title anim" style="--d:1">Os números de 2026</h2>
+    <div class="kgrid">
+      <div class="box anim" style="--d:2" tabindex="0">
+        <span class="more-hint">passe o mouse ▸ detalhes</span>
+        <div class="face">
+          <div class="lbl">Tarefas propostas</div>
+          <div class="big" data-count="prop">0</div>
+          <div class="row" id="propPills"></div>
+        </div>
+        <div class="detail" id="propDetail"></div>
+      </div>
+      <div class="kcol">
+        <div class="box feita anim" style="--d:3" tabindex="0">
+          <span class="more-hint">detalhes</span>
+          <div class="face">
+            <div class="lbl">Realizadas</div>
+            <div style="display:flex;align-items:baseline"><div class="mid" data-count="feita">0</div><span class="pct" id="feitaPct"></span></div>
+            <div class="meter"><span id="feitaMeter" style="background:var(--feita)"></span></div>
+          </div>
+          <div class="detail" id="feitaDetail"></div>
+        </div>
+        <div class="box canc anim" style="--d:4" tabindex="0">
+          <span class="more-hint">detalhes</span>
+          <div class="face">
+            <div class="lbl">Canceladas / não realizadas</div>
+            <div style="display:flex;align-items:baseline"><div class="mid" data-count="canc">0</div><span class="pct" id="cancPct"></span></div>
+            <div class="meter"><span id="cancMeter" style="background:var(--canc)"></span></div>
+          </div>
+          <div class="detail" id="cancDetail"></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="card">
-    <h2>Pesquisar evento</h2>
-    <div class="desc">Digite o nome do evento (ex.: poker, truco, corrida) para ver quantos participantes teve. Clique no cabeçalho para ordenar.</div>
-    <div class="searchbar">
-      <input type="search" id="busca" placeholder="Buscar evento…" list="listaEventos" autocomplete="off">
-      <datalist id="listaEventos"></datalist>
-      <div class="total-box"><b id="bPart">0</b><span id="bInfo">participantes</span></div>
+  <!-- 3. Comparativo mensal -->
+  <section class="slide" data-title="Comparativo mensal">
+    <div class="eyebrow anim" style="--d:0">Mês a mês</div>
+    <h2 class="title anim" style="--d:1">Comparativo mensal</h2>
+    <div class="split">
+      <div class="panel anim" style="--d:2">
+        <div class="chartbox"><canvas id="chMes"></canvas></div>
+      </div>
+      <div class="panel side anim" style="--d:3">
+        <h3>% realizado do ano</h3>
+        <div class="ring"><canvas id="chRing"></canvas><div class="center"><b id="ringPct">0%</b><span id="ringSub"></span></div></div>
+        <div class="stat"><span>Até o momento <small id="ateLbl"></small></span><b id="atePct"></b></div>
+        <div class="stat"><span>Realizadas</span><b id="sFeita" style="color:var(--feita)"></b></div>
+        <div class="stat"><span>Canceladas</span><b id="sCanc" style="color:var(--canc)"></b></div>
+        <div class="stat"><span>A fazer / em andamento</span><b id="sPend"></b></div>
+        <div class="stat"><span>Mês com mais realizadas</span><b id="sBest"></b></div>
+      </div>
     </div>
-    <div class="scroll">
+    <div class="foot"><span class="hint">Passe o mouse sobre um mês para ver o que foi realizado e por quem</span></div>
+  </section>
+
+  <!-- 4. Responsáveis -->
+  <section class="slide" data-title="Responsáveis">
+    <div class="eyebrow anim" style="--d:0">Quem faz acontecer</div>
+    <h2 class="title anim" style="--d:1">Responsáveis pelas atividades</h2>
+    <div class="split">
+      <div class="panel anim" style="--d:2"><div class="chartbox"><canvas id="chResp"></canvas></div></div>
+      <div class="panel side anim" style="--d:3">
+        <h3>Mais atividades realizadas</h3>
+        <div class="rank" id="rank"></div>
+      </div>
+    </div>
+    <div class="foot"><span class="hint">Passe o mouse sobre as barras para ver os números de cada situação</span></div>
+  </section>
+
+  <!-- 5. Resumo por responsável + pesquisa -->
+  <section class="slide" data-title="Resumo e pesquisa">
+    <div class="eyebrow anim" style="--d:0">Resumo</div>
+    <h2 class="title anim" style="--d:1;margin-bottom:24px">Resumo por responsável</h2>
+    <div class="panel anim" style="--d:2;padding:10px 18px">
       <table>
-        <thead><tr>
-          <th data-k="evento">Evento</th><th data-k="mes">Mês</th><th data-k="data">Data</th><th data-k="responsavel">Responsável</th>
-          <th data-k="categoria" class="hide-sm">Categoria</th><th data-k="situacao">Situação</th><th class="n" data-k="participantes">Participantes</th>
-        </tr></thead>
-        <tbody id="tEventos"></tbody>
+        <thead><tr><th>Responsável</th><th class="n">Tarefas</th><th class="n">Realizadas</th><th class="n">Canceladas</th><th>% feito</th><th class="n">Atendimentos</th></tr></thead>
+        <tbody id="tResp"></tbody>
       </table>
     </div>
-    <details>
-      <summary>Como os números são calculados</summary>
-      <ul>
-        <li><b>Mês</b>: o bloco do mês em que a tarefa está na aba Responsabilidades.</li>
-        <li><b>Realizada</b>: status FEITO. <b>Cancelada</b>: status CANCELADO ou NÃO REALIZADO. Transferidas, em andamento e pendentes aparecem à parte.</li>
-        <li><b>% realizado do ano</b>: realizadas ÷ propostas do ano. “Até agora” considera só os meses até o mês atual.</li>
-        <li><b>Atendimentos</b>: soma da coluna PARTICIPANTES. Quando a coluna está vazia e a observação diz “N participantes”, esse número é usado.</li>
-        <li id="infer"></li>
-      </ul>
-    </details>
+    <div class="search anim" style="--d:3">
+      <div class="sbox">
+        <div class="sinput">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input id="busca" type="text" placeholder="Pesquisar evento (ex.: poker, truco, corrida, festa)…" autocomplete="off">
+        </div>
+        <div class="results" id="results"></div>
+      </div>
+      <div class="total"><b id="bPart">0</b><span id="bInfo">participantes</span></div>
+    </div>
   </section>
+
+  <!-- 6. Atendimentos -->
+  <section class="slide" data-title="Atendimentos">
+    <div class="eyebrow anim" style="--d:0">Pessoas atendidas</div>
+    <h2 class="title anim" style="--d:1">Atendimentos por mês</h2>
+    <div class="split">
+      <div class="panel anim" style="--d:2"><div class="chartbox"><canvas id="chPart"></canvas></div></div>
+      <div class="panel side anim" style="--d:3">
+        <h3>Total de atendimentos no ano</h3>
+        <div class="hero-num" data-count="part">0</div>
+        <span style="color:var(--muted);font-size:15px;margin-top:-8px" id="partSub"></span>
+        <div class="hl"><small>Maior evento</small><b id="hlTop"></b><span id="hlTopS"></span></div>
+        <div class="hl"><small>Mês de maior público</small><b id="hlMes"></b><span id="hlMesS"></span></div>
+        <div class="hl"><small>Média por evento</small><b id="hlMed"></b><span>participantes</span></div>
+      </div>
+    </div>
+    <div class="foot"><span class="hint">Barras: atendimentos do mês · Linha: total acumulado no ano</span></div>
+  </section>
+
+</div></div>
+
+<div class="ctrl">
+  <button id="prevBtn" aria-label="Slide anterior"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+  <div class="dots" id="dots"></div>
+  <button id="nextBtn" aria-label="Próximo slide"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
 </div>
+<div class="toast" id="toast">Gerando PDF…</div>
 
 <script>
 (() => {
   const D = window.DADOS;
-  if (!D) { document.body.innerHTML = '<p class="empty">Arquivo data.js não encontrado. Rode atualizar-dados.ps1.</p>'; return; }
+  if (!D) { document.body.innerHTML = '<p style="padding:40px">Arquivo data.js não encontrado. Rode atualizar-dados.ps1.</p>'; return; }
+
+  // ---------- Dados ----------
   const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
   const MESES_L = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
   const SITS = ['Realizada','Em andamento','Pendente','Transferida','Cancelada'];
-  const T = D.tarefas.map(t => ({ ...t, participantes: t.participantes ?? null }));
+  const COR = { 'Realizada': '#3fc495', 'Em andamento': '#79b4f2', 'Pendente': '#7d8fa8', 'Transferida': '#f2b84b', 'Cancelada': '#ef7a62' };
+  const T = D.tarefas.map(t => ({ ...t, responsavel: t.responsavel || '(sem responsável)' }));
   const fmt = n => n.toLocaleString('pt-BR');
   const pctN = (a, b) => b ? Math.round(a / b * 1000) / 10 : 0;
   const pct = (a, b) => pctN(a, b).toLocaleString('pt-BR');
-  const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const cap = s => s.toLowerCase().replace(/(^|\s)\S/g, m => m.toUpperCase());
+  const by = s => T.filter(t => t.situacao === s);
+  const sumP = arr => arr.reduce((a, t) => a + (t.participantes || 0), 0);
+
   const hoje = new Date();
   const mesAtual = hoje.getFullYear() > D.ano ? 12 : (hoje.getFullYear() < D.ano ? 0 : hoje.getMonth() + 1);
-
-  document.getElementById('sub').textContent = `Aba Responsabilidades · ${T.length} tarefas · dados de ${D.atualizadoEm}`;
-
-  // Filtros
-  const uniq = k => [...new Set(T.map(t => t[k]).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
-  const fill = (id, opts, all) => {
-    const s = document.getElementById(id);
-    s.innerHTML = `<option value="">${all}</option>` + opts.map(o => `<option value="${o.v ?? o}">${o.l ?? o}</option>`).join('');
+  const feitas = by('Realizada'), canc = by('Cancelada');
+  const K = {
+    prop: T.length, feita: feitas.length, canc: canc.length,
+    afazer: by('Pendente').length + by('Em andamento').length, transf: by('Transferida').length,
+    part: sumP(T)
   };
-  fill('fMes', MESES_L.map((l, i) => ({ v: i + 1, l })), 'Todos os meses');
-  fill('fResp', uniq('responsavel'), 'Todos');
-  fill('fCat', uniq('categoria'), 'Todas');
-  document.getElementById('listaEventos').innerHTML = [...new Set(T.map(t => t.evento))].map(e => `<option value="${e.replace(/"/g, '&quot;')}">`).join('');
+  const ate = T.filter(t => t.mes <= mesAtual);
+  const ateFeita = ate.filter(t => t.situacao === 'Realizada').length;
+  const resps = [...new Set(T.map(t => t.responsavel))].sort((a, b) => T.filter(t => t.responsavel === b).length - T.filter(t => t.responsavel === a).length);
+  const cats = [...new Set(T.map(t => t.categoria).filter(Boolean))];
 
-  const f = { mes: '', resp: '', cat: '', busca: '' };
-  const filtradas = (ignoraMes) => T.filter(t =>
-    (ignoraMes || !f.mes || t.mes == f.mes) && (!f.resp || t.responsavel === f.resp) && (!f.cat || t.categoria === f.cat));
+  // ---------- Marca + numeração em todos os slides ----------
+  const slides = [...document.querySelectorAll('.slide')];
+  slides.forEach((s, i) => {
+    s.insertAdjacentHTML('afterbegin', `<div class="brand"><span class="mark">AV</span>Associação Volvo</div>`);
+    s.insertAdjacentHTML('beforeend', `<div class="pageno">${String(i + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}</div>`);
+  });
 
-  // Gráficos
-  Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
-  Chart.defaults.font.size = 12;
+  // ---------- Conteúdo estático ----------
+  document.getElementById('coverLead').textContent =
+    `Acompanhamento das atividades esportivas e sociais da Associação Volvo — janeiro a ${MESES_L[Math.max(mesAtual, 1) - 1].toLowerCase()} de ${D.ano}. Dados de ${D.atualizadoEm}.`;
+
+  document.getElementById('propPills').innerHTML =
+    `<span class="pill"><i style="background:var(--pend)"></i>${K.afazer} a fazer</span>
+     <span class="pill"><i style="background:var(--transf)"></i>${K.transf} transferidas</span>
+     <span class="pill"><i style="background:var(--prop)"></i>${K.prop} propostas</span>`;
+  const dl = rows => `<div class="dl">${rows.map(([k, v]) => `<span class="k">${k}</span><span class="v">${v}</span>`).join('')}</div>`;
+  document.getElementById('propDetail').innerHTML = `
+    <div class="cols">
+      <div><h4>Por situação</h4>${dl(SITS.map(s => [`<i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${COR[s]};margin-right:10px"></i>${s}`, by(s).length]))}</div>
+      <div><h4>Por categoria</h4>${dl(cats.map(c => [cap(c), T.filter(t => t.categoria === c).length]))}
+        <h4 style="margin-top:26px">Por responsável</h4>${dl(resps.map(r => [r, T.filter(t => t.responsavel === r).length]))}</div>
+    </div>`;
+  document.getElementById('feitaPct').textContent = `${pct(K.feita, K.prop)}%`;
+  document.getElementById('cancPct').textContent = `${pct(K.canc, K.prop)}%`;
+  document.getElementById('feitaDetail').innerHTML = `
+    <div class="cols">
+      <div><h4>Por categoria</h4>${dl(cats.map(c => [cap(c), feitas.filter(t => t.categoria === c).length]))}</div>
+      <div><h4>Por responsável</h4>${dl(resps.map(r => [r, feitas.filter(t => t.responsavel === r).length]).filter(x => x[1]))}</div>
+    </div>`;
+  document.getElementById('cancDetail').innerHTML = `<h4>Eventos cancelados ou não realizados</h4>
+    <ul class="list-sm">${canc.map(t => `<li>${esc(cap(t.evento))} <small>· ${MESES[t.mes - 1]}</small></li>`).join('')}</ul>`;
+
+  // Lateral do mensal
+  const realMes = MESES.map((_, i) => feitas.filter(t => t.mes === i + 1).length);
+  const best = realMes.indexOf(Math.max(...realMes));
+  document.getElementById('ringSub').textContent = `${K.feita} de ${K.prop}`;
+  document.getElementById('ateLbl').textContent = `(até ${MESES[Math.max(mesAtual, 1) - 1]})`;
+  document.getElementById('atePct').textContent = `${pct(ateFeita, ate.length)}%`;
+  document.getElementById('sFeita').textContent = K.feita;
+  document.getElementById('sCanc').textContent = K.canc;
+  document.getElementById('sPend').textContent = K.afazer;
+  document.getElementById('sBest').textContent = `${MESES[best]} · ${realMes[best]}`;
+
+  // Ranking
+  const rk = resps.map(r => { const g = T.filter(t => t.responsavel === r); const f = g.filter(t => t.situacao === 'Realizada').length; return { r, f, n: g.length }; })
+    .sort((a, b) => b.f - a.f);
+  document.getElementById('rank').innerHTML = rk.map((x, i) =>
+    `<div class="r"><span class="pos">${i + 1}</span><span class="nm">${esc(x.r)}<small>${x.n} tarefas · ${pct(x.f, x.n)}% concluído</small></span><span class="val">${x.f}</span></div>`).join('');
+
+  // Tabela resumo
+  const maxN = Math.max(...rk.map(x => x.n));
+  document.getElementById('tResp').innerHTML = resps.map(r => {
+    const g = T.filter(t => t.responsavel === r), f = g.filter(t => t.situacao === 'Realizada').length;
+    return `<tr><td><b>${esc(r)}</b></td><td class="n">${g.length}</td><td class="n" style="color:var(--feita);font-weight:700">${f}</td>
+      <td class="n" style="color:var(--canc)">${g.filter(t => t.situacao === 'Cancelada').length}</td>
+      <td><span class="bar" style="width:${Math.round(pctN(f, g.length) * 1.6)}px"></span>${pct(f, g.length)}%</td>
+      <td class="n">${fmt(sumP(g))}</td></tr>`;
+  }).join('');
+
+  // Atendimentos
+  const partMes = MESES.map((_, i) => sumP(T.filter(t => t.mes === i + 1)));
+  const comPart = T.filter(t => t.participantes > 0);
+  const top = [...comPart].sort((a, b) => b.participantes - a.participantes)[0];
+  const mMax = partMes.indexOf(Math.max(...partMes));
+  document.getElementById('partSub').textContent = `pessoas em ${comPart.length} eventos com participantes registrados`;
+  document.getElementById('hlTop').textContent = top ? cap(top.evento) : '—';
+  document.getElementById('hlTopS').textContent = top ? `${fmt(top.participantes)} participantes · ${MESES_L[top.mes - 1]}` : '';
+  document.getElementById('hlMes').textContent = MESES_L[mMax];
+  document.getElementById('hlMesS').textContent = `${fmt(partMes[mMax])} atendimentos`;
+  document.getElementById('hlMed').textContent = fmt(Math.round(K.part / Math.max(comPart.length, 1)));
+
+  // ---------- Busca ----------
+  const norm = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const SC = { 'Realizada': ['rgba(63,196,149,.18)', '#3fc495'], 'Cancelada': ['rgba(239,122,98,.18)', '#ef7a62'], 'Transferida': ['rgba(242,184,75,.18)', '#f2b84b'], 'Em andamento': ['rgba(121,180,242,.18)', '#79b4f2'], 'Pendente': ['rgba(255,255,255,.08)', '#a9bbd2'] };
+  function busca(q) {
+    q = norm(q).trim();
+    const rows = T.filter(t => !q || norm(t.evento).includes(q)).sort((a, b) => (b.participantes || 0) - (a.participantes || 0) || a.mes - b.mes);
+    document.getElementById('bPart').textContent = fmt(sumP(rows));
+    document.getElementById('bInfo').textContent = `participantes em ${rows.length} evento${rows.length === 1 ? '' : 's'}${q ? '' : ' (todos)'}`;
+    document.getElementById('results').innerHTML = rows.map(t => `<div class="res">
+      <span class="ev" title="${esc(t.evento)}">${esc(cap(t.evento))}</span>
+      <span class="m">${MESES_L[t.mes - 1]}</span>
+      <span class="tag-s" style="background:${SC[t.situacao][0]};color:${SC[t.situacao][1]}">${t.situacao}</span>
+      <span class="q">${t.participantes != null ? fmt(t.participantes) : '—'}</span></div>`).join('')
+      || '<div class="res" style="color:var(--muted)">Nenhum evento encontrado</div>';
+  }
+  document.getElementById('busca').addEventListener('input', e => busca(e.target.value));
+  busca('');
+
+  // ---------- Gráficos ----------
+  Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
+  Chart.defaults.font.size = 15;
+  Chart.defaults.color = '#a9bbd2';
+  const grid = { color: 'rgba(255,255,255,.08)' };
   const charts = {};
-  const sitColor = s => css({ 'Realizada': '--c-feita', 'Cancelada': '--c-canc', 'Transferida': '--c-transf', 'Em andamento': '--c-and', 'Pendente': '--c-pend' }[s]);
-  const baseOpts = () => ({
-    responsive: true, maintainAspectRatio: false, animation: { duration: 300 }, locale: 'pt-BR', layout: { padding: { left: 6 } },
-    plugins: { legend: { position: 'bottom', labels: { color: css('--muted'), boxWidth: 12, boxHeight: 12, useBorderRadius: true, borderRadius: 3 } },
-               tooltip: { mode: 'index', intersect: false } },
-    scales: {
-      x: { ticks: { color: css('--muted') }, grid: { display: false }, border: { color: css('--line') } },
-      y: { beginAtZero: true, ticks: { color: css('--muted'), precision: 0 }, grid: { color: css('--line') }, border: { display: false } }
+
+  // Tooltip HTML do mensal
+  function monthHTML(i) {
+    const g = T.filter(t => t.mes === i + 1), f = g.filter(t => t.situacao === 'Realizada');
+    const ppl = [...new Set(f.map(t => t.responsavel))].map(r => ({ r, ev: f.filter(t => t.responsavel === r) })).sort((a, b) => b.ev.length - a.ev.length);
+    return `<h5>${MESES_L[i]}</h5>
+      <div class="nums"><span><b>${g.length}</b>propostas</span><span><b style="color:#1f8a63">${f.length}</b>realizadas</span><span><b style="color:#c8553d">${g.filter(t => t.situacao === 'Cancelada').length}</b>canceladas</span></div>
+      <div class="who"><div class="t">Quem realizou</div>${ppl.length ? ppl.map(p => `<div class="p"><b>${esc(p.r)}</b><span class="n">${p.ev.length}</span>
+        <small>${p.ev.slice(0, 3).map(t => esc(cap(t.evento))).join(' · ')}${p.ev.length > 3 ? ` · +${p.ev.length - 3}` : ''}</small></div>`).join('') : '<div class="p"><small>Nenhuma atividade realizada ainda</small></div>'}</div>`;
+  }
+  function externalTip(ctx) {
+    const { chart, tooltip } = ctx;
+    const box = chart.canvas.parentNode;
+    let el = box.querySelector('.ttip');
+    if (!el) { el = document.createElement('div'); el.className = 'ttip'; box.appendChild(el); }
+    if (tooltip.opacity === 0) { el.style.opacity = 0; return; }
+    const i = tooltip.dataPoints[0].dataIndex;
+    if (el.dataset.i !== String(i)) { el.innerHTML = monthHTML(i); el.dataset.i = i; }
+    const w = el.offsetWidth, W = box.clientWidth;
+    let x = tooltip.caretX + 24;
+    if (x + w > W) x = tooltip.caretX - w - 24;
+    el.style.left = Math.max(0, x) + 'px';
+    el.style.opacity = 1;
+  }
+
+  const porMes = s => MESES.map((_, i) => T.filter(t => t.mes === i + 1 && (!s || t.situacao === s)).length);
+  const barDs = (label, data, color) => ({ label, data, backgroundColor: color, hoverBackgroundColor: color, borderRadius: 6, maxBarThickness: 26, categoryPercentage: .72, barPercentage: .9 });
+  const legend = { position: 'top', align: 'end', labels: { boxWidth: 12, boxHeight: 12, useBorderRadius: true, borderRadius: 3, padding: 18, color: '#dbe9f8' } };
+
+  function makeCharts() {
+    charts.mes = new Chart(document.getElementById('chMes'), {
+      type: 'bar',
+      data: { labels: MESES, datasets: [barDs('Propostas', porMes(), '#9fb2cc'), barDs('Realizadas', porMes('Realizada'), '#3fc495'), barDs('Canceladas', porMes('Cancelada'), '#ef7a62')] },
+      options: {
+        responsive: false, maintainAspectRatio: false, devicePixelRatio: 2, locale: 'pt-BR',
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend, tooltip: { enabled: false, external: externalTip } },
+        scales: { x: { grid: { display: false }, ticks: { color: '#dbe9f8', font: { size: 16, weight: 600 } } }, y: { beginAtZero: true, grid, border: { display: false }, ticks: { precision: 0 } } }
+      }
+    });
+
+    charts.ring = new Chart(document.getElementById('chRing'), {
+      type: 'doughnut',
+      data: { labels: ['Realizadas', 'Demais'], datasets: [{ data: [K.feita, K.prop - K.feita], backgroundColor: ['#3fc495', 'rgba(255,255,255,.08)'], borderWidth: 0, borderRadius: 8 }] },
+      options: { responsive: false, maintainAspectRatio: false, devicePixelRatio: 2, cutout: '80%', plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+    });
+
+    charts.resp = new Chart(document.getElementById('chResp'), {
+      type: 'bar',
+      data: { labels: resps, datasets: SITS.map(s => ({ label: s, backgroundColor: COR[s], borderRadius: 4, maxBarThickness: 40, borderSkipped: false,
+        data: resps.map(r => T.filter(t => t.responsavel === r && t.situacao === s).length) })) },
+      options: {
+        indexAxis: 'y', responsive: false, maintainAspectRatio: false, devicePixelRatio: 2, locale: 'pt-BR',
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend, tooltip: { padding: 14, titleFont: { size: 16 }, bodyFont: { size: 14 }, footerFont: { size: 14 },
+          callbacks: { footer: items => `Total: ${items.reduce((a, i) => a + i.parsed.x, 0)} tarefas` } } },
+        scales: { x: { stacked: true, grid, border: { display: false }, ticks: { precision: 0 } },
+                  y: { stacked: true, grid: { display: false }, ticks: { color: '#f3f7fc', font: { size: 17, weight: 600 } } } }
+      }
+    });
+
+    let acc = 0; const cum = partMes.map(v => (acc += v));
+    const valueLabels = {
+      id: 'valueLabels',
+      afterDatasetsDraw(chart) {
+        const { ctx } = chart, meta = chart.getDatasetMeta(0);
+        ctx.save(); ctx.font = `700 14px ${Chart.defaults.font.family}`; ctx.fillStyle = '#dbe9f8'; ctx.textAlign = 'center';
+        meta.data.forEach((bar, i) => { const v = partMes[i]; if (v) ctx.fillText(fmt(v), bar.x, bar.y - 10); });
+        ctx.restore();
+      }
+    };
+    charts.part = new Chart(document.getElementById('chPart'), {
+      data: {
+        labels: MESES,
+        datasets: [
+          { type: 'bar', label: 'Atendimentos no mês', data: partMes, borderRadius: 10, maxBarThickness: 54, order: 2,
+            backgroundColor: c => { const { ctx, chartArea } = c.chart; if (!chartArea) return '#2f6db5';
+              const g = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top); g.addColorStop(0, 'rgba(47,109,181,.35)'); g.addColorStop(1, '#79b4f2'); return g; },
+            hoverBackgroundColor: '#a8d0ff' },
+          { type: 'line', label: 'Acumulado no ano', data: cum, yAxisID: 'y1', order: 1, borderColor: '#f2b84b', backgroundColor: '#f2b84b',
+            borderWidth: 3, tension: .35, pointRadius: 4, pointHoverRadius: 7, pointBackgroundColor: '#071a30', pointBorderWidth: 3 }
+        ]
+      },
+      options: {
+        responsive: false, maintainAspectRatio: false, devicePixelRatio: 2, locale: 'pt-BR', layout: { padding: { top: 24 } },
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend, tooltip: { padding: 14, titleFont: { size: 16 }, bodyFont: { size: 14 }, footerFont: { size: 13, weight: 400 },
+          callbacks: {
+            label: c => ` ${c.dataset.label}: ${fmt(c.parsed.y)}`,
+            footer: items => { const i = items[0].dataIndex; const ev = T.filter(t => t.mes === i + 1 && t.participantes > 0).sort((a, b) => b.participantes - a.participantes).slice(0, 3);
+              return ev.length ? ['', 'Maiores eventos:', ...ev.map(t => `• ${cap(t.evento)}: ${fmt(t.participantes)}`)] : []; }
+          } } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#dbe9f8', font: { size: 16, weight: 600 } } },
+          y: { beginAtZero: true, grid, border: { display: false }, ticks: { callback: v => fmt(v) } },
+          y1: { position: 'right', beginAtZero: true, grid: { display: false }, border: { display: false }, ticks: { color: '#f2b84b', callback: v => fmt(v) } }
+        }
+      },
+      plugins: [valueLabels]
+    });
+  }
+  makeCharts();
+  // O palco tem tamanho fixo (1600x900); os gráficos são dimensionados uma vez pelo tamanho real da caixa
+  const sizeCharts = () => Object.values(charts).forEach(c => { const b = c.canvas.parentNode; c.resize(b.clientWidth, b.clientHeight); });
+  sizeCharts();
+
+  // ---------- Navegação ----------
+  let cur = 0;
+  const dots = document.getElementById('dots');
+  dots.innerHTML = slides.map((s, i) => `<button aria-label="${s.dataset.title}" title="${s.dataset.title}"></button>`).join('');
+  dots.querySelectorAll('button').forEach((b, i) => b.addEventListener('click', () => go(i)));
+
+  function countUp(el, to, instant) {
+    if (instant) { el.textContent = fmt(to); return; }
+    const t0 = performance.now(), dur = 1100;
+    const step = now => { const p = Math.min((now - t0) / dur, 1); el.textContent = fmt(Math.round(to * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }
+  const chartsOf = { 2: ['mes', 'ring'], 3: ['resp'], 5: ['part'] };
+
+  function go(i, instant) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, j) => { s.classList.toggle('active', j === i); s.classList.toggle('prev', j < i); });
+    cur = i;
+    dots.querySelectorAll('button').forEach((b, j) => b.classList.toggle('on', j === i));
+    document.getElementById('prevBtn').disabled = i === 0;
+    document.getElementById('nextBtn').disabled = i === slides.length - 1;
+    document.getElementById('progress').style.width = `${(i + 1) / slides.length * 100}%`;
+    slides[i].querySelectorAll('[data-count]').forEach(el => countUp(el, K[el.dataset.count], instant));
+    document.getElementById('feitaMeter').style.width = i === 1 ? `${pctN(K.feita, K.prop)}%` : '0';
+    document.getElementById('cancMeter').style.width = i === 1 ? `${pctN(K.canc, K.prop)}%` : '0';
+    (chartsOf[i] || []).forEach(k => { const c = charts[k]; if (instant) { c.update('none'); } else { c.reset(); c.update(); } });
+    document.getElementById('ringPct').textContent = `${pct(K.feita, K.prop)}%`;
+    if (!instant) history.replaceState(null, '', `#${i + 1}`);
+  }
+  document.getElementById('prevBtn').onclick = () => go(cur - 1);
+  document.getElementById('nextBtn').onclick = () => go(cur + 1);
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT') return;
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+    if (e.key === 'Home') go(0);
+    if (e.key === 'End') go(slides.length - 1);
+  });
+  let tx = null;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 60) go(cur + (dx < 0 ? 1 : -1)); tx = null; });
+  // Toque/clique abre o detalhe dos boxes (telas sem mouse)
+  document.querySelectorAll('.box').forEach(b => b.addEventListener('click', () => b.classList.toggle('open')));
+
+  // ---------- Escala do palco ----------
+  const stage = document.getElementById('stage');
+  function fit() {
+    const s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = `translate(-50%, -50%) scale(${s})`;
+  }
+  window.addEventListener('resize', fit); fit();
+
+  // ---------- PDF ----------
+  const pdfBtn = document.getElementById('pdfBtn');
+  pdfBtn.addEventListener('click', async () => {
+    if (!window.jspdf || !window.html2canvas) { window.print(); return; }
+    pdfBtn.disabled = true;
+    const voltar = cur;
+    document.body.classList.add('exporting');
+    try {
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [1600, 900], hotfixes: ['px_scaling'], compress: true });
+      for (let i = 0; i < slides.length; i++) {
+        go(i, true);
+        await new Promise(r => setTimeout(r, 250));
+        const canvas = await html2canvas(slides[i], { scale: 1.5, backgroundColor: '#071a30', width: 1600, height: 900, windowWidth: 1600, windowHeight: 900, scrollX: 0, scrollY: 0, logging: false });
+        if (i > 0) pdf.addPage([1600, 900], 'landscape');
+        pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 1600, 900);
+      }
+      pdf.save(`Calendario-Eventos-${D.ano}-AV.pdf`);
+    } catch (err) {
+      console.error(err);
+      alert('Não foi possível gerar o PDF. Tente novamente.');
+    } finally {
+      document.body.classList.remove('exporting');
+      fit();
+      go(voltar, true);
+      pdfBtn.disabled = false;
     }
   });
 
-  function render() {
-    const base = filtradas(false);
-    const anual = filtradas(true);
-    const n = s => base.filter(t => t.situacao === s).length;
-    const prop = base.length, feita = n('Realizada'), canc = n('Cancelada');
-    const part = base.reduce((a, t) => a + (t.participantes || 0), 0);
-    const comPart = base.filter(t => t.participantes > 0).length;
-
-    document.getElementById('kProp').textContent = fmt(prop);
-    document.getElementById('kPropN').textContent = `${n('Pendente') + n('Em andamento')} a fazer · ${n('Transferida')} transferidas`;
-    document.getElementById('kFeita').textContent = fmt(feita);
-    document.getElementById('kFeitaN').textContent = `${pct(feita, prop)}% das propostas`;
-    document.getElementById('kCanc').textContent = fmt(canc);
-    document.getElementById('kCancN').textContent = `${pct(canc, prop)}% das propostas`;
-    document.getElementById('kPart').textContent = fmt(part);
-    document.getElementById('kPartN').textContent = `em ${comPart} eventos com participantes registrados`;
-
-    const aFeita = anual.filter(t => t.situacao === 'Realizada').length;
-    const ate = anual.filter(t => t.mes <= mesAtual);
-    const ateFeita = ate.filter(t => t.situacao === 'Realizada').length;
-    document.getElementById('kPct').textContent = `${pct(aFeita, anual.length)}%`;
-    document.getElementById('kPctBar').style.width = `${Math.min(pctN(aFeita, anual.length), 100)}%`;
-    document.getElementById('kPctN').textContent = `${aFeita} de ${anual.length} no ano · até ${MESES_L[mesAtual - 1] || '—'}: ${pct(ateFeita, ate.length)}%`;
-
-    // Mensal (sempre mostra o ano todo, respeitando responsável/categoria)
-    const porMes = s => MESES.map((_, i) => anual.filter(t => t.mes === i + 1 && (!s || t.situacao === s)).length);
-    const realce = (cor) => MESES.map((_, i) => !f.mes || f.mes == i + 1 ? cor : cor + '40');
-    upsert('chMes', 'bar', {
-      labels: MESES,
-      datasets: [
-        { label: 'Propostas', data: porMes(), backgroundColor: realce(css('--c-prop')), borderRadius: 4, maxBarThickness: 22 },
-        { label: 'Realizadas', data: porMes('Realizada'), backgroundColor: realce(css('--c-feita')), borderRadius: 4, maxBarThickness: 22 },
-        { label: 'Canceladas', data: porMes('Cancelada'), backgroundColor: realce(css('--c-canc')), borderRadius: 4, maxBarThickness: 22 }
-      ]
-    }, baseOpts());
-
-    // Responsáveis (empilhado por situação)
-    const resps = [...new Set(base.map(t => t.responsavel || '(sem responsável)'))]
-      .map(r => ({ r, n: base.filter(t => (t.responsavel || '(sem responsável)') === r).length }))
-      .sort((a, b) => b.n - a.n).map(x => x.r);
-    const ro = baseOpts();
-    ro.indexAxis = 'y';
-    ro.scales.x.stacked = true; ro.scales.y.stacked = true;
-    ro.scales.x.grid = { color: css('--line') }; ro.scales.y.grid = { display: false };
-    ro.scales.x.ticks.precision = 0;
-    upsert('chResp', 'bar', {
-      labels: resps,
-      datasets: SITS.map(s => ({
-        label: s, backgroundColor: sitColor(s), borderRadius: 3, maxBarThickness: 26,
-        data: resps.map(r => base.filter(t => (t.responsavel || '(sem responsável)') === r && t.situacao === s).length)
-      }))
-    }, ro);
-
-    // Atendimentos por mês
-    const po = baseOpts();
-    po.plugins.legend.display = false;
-    po.plugins.tooltip.callbacks = { label: c => ` ${fmt(c.parsed.y)} participantes` };
-    upsert('chPart', 'bar', {
-      labels: MESES,
-      datasets: [{ label: 'Participantes', data: MESES.map((_, i) => anual.filter(t => t.mes === i + 1).reduce((a, t) => a + (t.participantes || 0), 0)),
-                   backgroundColor: realce(css('--c-part')), borderRadius: 4, maxBarThickness: 28 }]
-    }, po);
-
-    // Tabela responsáveis
-    document.getElementById('tResp').innerHTML = resps.map(r => {
-      const g = base.filter(t => (t.responsavel || '(sem responsável)') === r);
-      const fe = g.filter(t => t.situacao === 'Realizada').length;
-      return `<tr><td>${r}</td><td class="n">${g.length}</td><td class="n">${fe}</td><td class="n">${g.filter(t => t.situacao === 'Cancelada').length}</td>
-              <td class="n">${pct(fe, g.length)}%</td><td class="n">${fmt(g.reduce((a, t) => a + (t.participantes || 0), 0))}</td></tr>`;
-    }).join('') || '<tr><td colspan="6" class="empty">Nenhuma tarefa</td></tr>';
-
-    renderBusca();
-  }
-
-  // Busca de eventos
-  let ord = { k: 'mes', dir: 1 };
-  const norm = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-  function renderBusca() {
-    const q = norm(f.busca).trim();
-    let rows = filtradas(false).filter(t => !q || norm(t.evento).includes(q));
-    rows.sort((a, b) => {
-      const va = a[ord.k] ?? -1, vb = b[ord.k] ?? -1;
-      return (typeof va === 'number' && typeof vb === 'number' ? va - vb : String(va).localeCompare(String(vb), 'pt-BR')) * ord.dir;
-    });
-    const tot = rows.reduce((a, t) => a + (t.participantes || 0), 0);
-    document.getElementById('bPart').textContent = fmt(tot);
-    document.getElementById('bInfo').textContent = `participantes em ${rows.length} evento${rows.length === 1 ? '' : 's'}`;
-    const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-    document.getElementById('tEventos').innerHTML = rows.map(t => `<tr>
-      <td>${esc(t.evento)}</td><td>${MESES[t.mes - 1]}</td><td>${esc(t.data) || '—'}</td><td>${esc(t.responsavel) || '—'}</td>
-      <td class="hide-sm">${esc(t.categoria) || '—'}</td><td><span class="pill p-${t.situacao.split(' ')[0]}">${t.situacao}${t.inferido ? '*' : ''}</span></td>
-      <td class="n">${t.participantes != null ? fmt(t.participantes) : '—'}</td></tr>`).join('')
-      || '<tr><td colspan="7" class="empty">Nenhum evento encontrado</td></tr>';
-  }
-  document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
-    const k = th.dataset.k;
-    ord = { k, dir: ord.k === k ? -ord.dir : (k === 'participantes' ? -1 : 1) };
-    renderBusca();
-  }));
-
-  function upsert(id, type, data, options) {
-    if (charts[id]) { charts[id].data = data; charts[id].options = options; charts[id].update(); return; }
-    charts[id] = new Chart(document.getElementById(id), { type, data, options });
-  }
-
-  const inf = T.filter(t => t.inferido);
-  document.getElementById('infer').innerHTML = inf.length
-    ? `<b>Marcadas com *</b>: ${inf.length} tarefas sem status na planilha, mas com 100% ou participantes registrados, contadas como realizadas: ${inf.map(t => `${t.evento} (${MESES[t.mes - 1]})`).join('; ')}. Vale preencher o status delas na planilha.`
-    : '';
-
-  [['fMes', 'mes'], ['fResp', 'resp'], ['fCat', 'cat']].forEach(([id, k]) =>
-    document.getElementById(id).addEventListener('change', e => { f[k] = e.target.value; render(); }));
-  document.getElementById('busca').addEventListener('input', e => { f.busca = e.target.value; renderBusca(); });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { Object.values(charts).forEach(c => c.destroy()); for (const k in charts) delete charts[k]; render(); });
-  render();
+  const start = parseInt(location.hash.slice(1), 10);
+  go(Number.isFinite(start) ? start - 1 : 0);
 })();
 </script>
 </body>

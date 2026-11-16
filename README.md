@@ -4,18 +4,21 @@ Dashboard dos eventos do calendário 2026, gerado a partir da planilha **Kanban 
 
 🔗 **Dashboard online:** https://leandrormctba-volvo.github.io/calendario/
 
-## O que o dashboard mostra
+## A apresentação (6 slides)
 
-- **Comparativo mensal**: tarefas propostas × realizadas × canceladas em cada mês.
-- **Tarefas por responsável**: quantas tarefas cada pessoa tem, separadas por situação.
-- **% realizado do ano**: tarefas realizadas ÷ tarefas propostas no ano (e até o mês atual).
-- **Atendimentos**: soma de participantes de todos os eventos, e por mês.
-- **Pesquisa por evento**: digite o nome do evento para ver quantos participantes teve.
-- Filtros por mês, responsável e categoria.
+1. **Capa**: Meta · Calendário de Eventos 2026 AV.
+2. **Os números de 2026**: tarefas propostas, realizadas e canceladas. Passe o mouse nos boxes para ver os detalhes.
+3. **Comparativo mensal**: propostas × realizadas × canceladas. Passe o mouse em um mês para ver o que foi realizado e por quem. Ao lado, o % realizado do ano e até o momento.
+4. **Responsáveis pelas atividades**: tarefas de cada pessoa por situação, com ranking.
+5. **Resumo por responsável + pesquisa de eventos**: tabela e busca de participantes por evento.
+6. **Atendimentos por mês**: atendimentos de cada mês, total acumulado e destaques do ano.
+
+Navegue com as setas ← → do teclado, com os botões embaixo ou deslizando o dedo (no celular).
+O botão **Baixar PDF** (canto superior direito) baixa os 6 slides em um arquivo PDF.
 
 ## Como abrir
 
-Abra o arquivo `index.html` no navegador (Chrome ou Edge).
+Abra o link online acima, ou o arquivo `index.html` no navegador (Chrome ou Edge).
 
 ## Como atualizar os dados
 
@@ -30,5 +33,5 @@ O script precisa do Microsoft Excel instalado.
 
 - **Mês**: o bloco do mês em que a tarefa está na planilha.
 - **Realizada**: status FEITO. **Cancelada**: status CANCELADO ou NÃO REALIZADO.
-- Tarefas sem status, mas com 100% ou com participantes registrados, contam como realizadas e aparecem com `*`.
+- Tarefas sem status, mas com 100% ou com participantes registrados, contam como realizadas.
 - **Participantes**: coluna PARTICIPANTES. Se estiver vazia e a observação disser "N participantes", esse número é usado.
