@@ -2,6 +2,8 @@
 
 Dashboard dos eventos do calendário 2026, gerado a partir da planilha **Kanban calendário** (aba *Responsabilidades*).
 
+🔗 **Dashboard online:** https://leandrormctba-volvo.github.io/calendario/
+
 ## O que o dashboard mostra
 
 - **Comparativo mensal**: tarefas propostas × realizadas × canceladas em cada mês.
