@@ -203,6 +203,80 @@
   body.exporting #stage { left: 0; top: 0; transform: none !important; }
   .toast { position: fixed; inset: 0; display: none; place-items: center; background: rgba(7,26,48,.88); z-index: 30; font-size: 18px; color: var(--ink); }
   body.exporting .toast { display: grid; }
+
+  /* ================= Versão celular: rolagem vertical, uma coluna ================= */
+  html.mobile, html.mobile body { height: auto; overflow-x: hidden; overflow-y: auto; }
+  html.mobile #viewport { position: static; background: none; }
+  html.mobile #stage { position: static; width: auto; height: auto; transform: none !important; }
+  html.mobile .slide { position: relative; inset: auto; opacity: 1; visibility: visible; transform: none; transition: none; padding: 68px 18px 40px; border-bottom: 1px solid var(--line); }
+  html.mobile .slide .anim { opacity: 0; transform: translateY(14px); animation: none; }
+  html.mobile .slide.seen .anim { animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(var(--d, 0) * 80ms); }
+  html.mobile .brand { top: 24px; }
+  html.mobile .brand img { height: 18px; }
+  html.mobile .brand.lg { top: 52px; }
+  html.mobile .brand.lg img { height: 34px; }
+  html.mobile .deco.a { width: 340px; height: 340px; right: -150px; top: -120px; }
+  html.mobile .deco.b { width: 240px; height: 240px; right: -40px; bottom: -150px; }
+  html.mobile .slide:first-child { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; }
+  html.mobile .opening { height: auto; padding-top: 20px; }
+  html.mobile .opening h1 { font-size: 46px; }
+  html.mobile .opening .rule { margin-top: 26px; width: 80px; }
+  html.mobile .cover { height: auto; padding: 8px 0 0; }
+  html.mobile .cover h1 { font-size: 42px; }
+  html.mobile .cover .lead { font-size: 16px; margin-top: 14px; }
+  html.mobile .chips { flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  html.mobile .chip { min-width: 0; flex: 1 1 130px; padding: 12px 14px; }
+  html.mobile .chip b { font-size: 26px; }
+  html.mobile .cover .nav-hint { margin-top: 22px; }
+  html.mobile .eyebrow { font-size: 12px; margin-bottom: 6px; }
+  html.mobile h2.title { font-size: 30px; margin-bottom: 18px !important; }
+  html.mobile .kgrid, html.mobile .kcol, html.mobile .split { display: flex; flex-direction: column; height: auto; gap: 14px; }
+  html.mobile .box { height: 230px; flex: none; border-radius: 16px; }
+  html.mobile .kgrid > .box { height: 290px; }
+  html.mobile .box:hover { transform: none; }
+  html.mobile .box .face { padding: 22px; }
+  html.mobile .box .detail { padding: 20px 22px; }
+  html.mobile .box .lbl { font-size: 16px; }
+  html.mobile .box .big { font-size: 120px; margin-top: 10px; }
+  html.mobile .box .mid { font-size: 72px; }
+  html.mobile .box .pct { font-size: 22px; }
+  html.mobile .box .more-hint { top: 22px; right: 20px; font-size: 10px; }
+  html.mobile .box .row { gap: 8px; }
+  html.mobile .pill { font-size: 14px; padding: 7px 12px; }
+  html.mobile .detail .cols { grid-template-columns: 1fr; gap: 16px; }
+  html.mobile .dl { font-size: 15px; gap: 6px 14px; }
+  html.mobile .detail h4 { font-size: 12px; margin-bottom: 10px; }
+  html.mobile .list-sm { columns: 1; font-size: 14px; }
+  html.mobile .panel { padding: 16px; border-radius: 16px; }
+  html.mobile .split > .panel:first-child { height: 360px; position: relative; z-index: 3; }
+  html.mobile .ring { height: 170px; }
+  html.mobile .ring .center b { font-size: 40px; }
+  html.mobile .side h3 { font-size: 12px; }
+  html.mobile .stat { font-size: 15px; }
+  html.mobile .stat b { font-size: 19px; }
+  html.mobile .rank .nm { font-size: 15px; }
+  html.mobile .rank .val { font-size: 19px; }
+  html.mobile .foot { position: static; margin-top: 14px; }
+  html.mobile .pageno { position: static; text-align: right; margin-top: 8px; font-size: 12px; }
+  html.mobile .hint { font-size: 13px; }
+  html.mobile .panel:has(table) { overflow-x: auto; }
+  html.mobile table { font-size: 14px; min-width: 560px; }
+  html.mobile th, html.mobile td { padding: 10px; }
+  html.mobile .search { grid-template-columns: 1fr; gap: 14px; margin-top: 16px; }
+  html.mobile .sbox { padding: 14px; }
+  html.mobile .sinput input { font-size: 16px; padding: 12px 0; }
+  html.mobile .results { height: 230px; }
+  html.mobile .res { grid-template-columns: 1fr auto; grid-template-areas: "ev q" "m tag"; gap: 4px 10px; font-size: 15px; }
+  html.mobile .res .ev { grid-area: ev; } html.mobile .res .q { grid-area: q; }
+  html.mobile .res .m { grid-area: m; font-size: 13px; } html.mobile .res .tag-s { grid-area: tag; justify-self: end; }
+  html.mobile .total { padding: 16px 18px; }
+  html.mobile .total b { font-size: 40px; }
+  html.mobile .hero-num { font-size: 64px; }
+  html.mobile .hl b { font-size: 18px; }
+  html.mobile .ctrl, html.mobile .progress { display: none; }
+  html.mobile .pdf-btn { position: fixed; top: auto; bottom: 18px; right: 16px; padding: 12px 16px; font-size: 13px; border-radius: 999px; background: var(--blue); border-color: rgba(255,255,255,.25); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+  html.mobile .ttip { left: 0 !important; right: 0; min-width: 0; max-width: none; padding: 14px 16px; }
+  html.mobile .ttip h5 { font-size: 18px; }
 </style>
 </head>
 <body>
@@ -486,6 +560,7 @@
   Chart.defaults.color = '#a9bbd2';
   const grid = { color: 'rgba(255,255,255,.08)' };
   const charts = {};
+  let labelSize = 14;
 
   // Tooltip HTML do mensal
   function monthHTML(i) {
@@ -512,18 +587,20 @@
   }
 
   const porMes = s => MESES.map((_, i) => T.filter(t => t.mes === i + 1 && (!s || t.situacao === s)).length);
-  const barDs = (label, data, color) => ({ label, data, backgroundColor: color, hoverBackgroundColor: color, borderRadius: 6, maxBarThickness: 26, categoryPercentage: .72, barPercentage: .9 });
-  const legend = { position: 'top', align: 'end', labels: { boxWidth: 12, boxHeight: 12, useBorderRadius: true, borderRadius: 3, padding: 18, color: '#dbe9f8' } };
+  let M = false; // true = layout de celular
+  const barDs = (label, data, color) => ({ label, data, backgroundColor: color, hoverBackgroundColor: color, borderRadius: M ? 3 : 6, maxBarThickness: M ? 8 : 26, categoryPercentage: .72, barPercentage: .9 });
+  const legendCfg = () => ({ position: 'top', align: M ? 'start' : 'end', labels: { boxWidth: M ? 10 : 12, boxHeight: M ? 10 : 12, useBorderRadius: true, borderRadius: 3, padding: M ? 10 : 18, color: '#dbe9f8', font: { size: M ? 11 : 15 } } });
 
   function makeCharts() {
+    Chart.defaults.font.size = M ? 11 : 15;
     charts.mes = new Chart(document.getElementById('chMes'), {
       type: 'bar',
       data: { labels: MESES, datasets: [barDs('Propostas', porMes(), '#9fb2cc'), barDs('Realizadas', porMes('Realizada'), '#3fc495'), barDs('Canceladas', porMes('Cancelada'), '#ef7a62')] },
       options: {
         responsive: false, maintainAspectRatio: false, devicePixelRatio: 2, locale: 'pt-BR',
         interaction: { mode: 'index', intersect: false },
-        plugins: { legend, tooltip: { enabled: false, external: externalTip } },
-        scales: { x: { grid: { display: false }, ticks: { color: '#dbe9f8', font: { size: 16, weight: 600 } } }, y: { beginAtZero: true, grid, border: { display: false }, ticks: { precision: 0 } } }
+        plugins: { legend: legendCfg(), tooltip: { enabled: false, external: externalTip } },
+        scales: { x: { grid: { display: false }, ticks: { color: '#dbe9f8', maxRotation: 0, autoSkip: false, font: { size: M ? 10 : 16, weight: 600 } } }, y: { beginAtZero: true, grid, border: { display: false }, ticks: { precision: 0 } } }
       }
     });
 
@@ -540,10 +617,10 @@
       options: {
         indexAxis: 'y', responsive: false, maintainAspectRatio: false, devicePixelRatio: 2, locale: 'pt-BR',
         interaction: { mode: 'index', intersect: false },
-        plugins: { legend, tooltip: { padding: 14, titleFont: { size: 16 }, bodyFont: { size: 14 }, footerFont: { size: 14 },
+        plugins: { legend: legendCfg(), tooltip: { padding: 14, titleFont: { size: 16 }, bodyFont: { size: 14 }, footerFont: { size: 14 },
           callbacks: { footer: items => `Total: ${items.reduce((a, i) => a + i.parsed.x, 0)} tarefas` } } },
         scales: { x: { stacked: true, grid, border: { display: false }, ticks: { precision: 0 } },
-                  y: { stacked: true, grid: { display: false }, ticks: { color: '#f3f7fc', font: { size: 17, weight: 600 } } } }
+                  y: { stacked: true, grid: { display: false }, ticks: { color: '#f3f7fc', font: { size: M ? 12 : 17, weight: 600 } } } }
       }
     });
 
@@ -552,8 +629,8 @@
       id: 'valueLabels',
       afterDatasetsDraw(chart) {
         const { ctx } = chart, meta = chart.getDatasetMeta(0);
-        ctx.save(); ctx.font = `700 14px ${Chart.defaults.font.family}`; ctx.fillStyle = '#dbe9f8'; ctx.textAlign = 'center';
-        meta.data.forEach((bar, i) => { const v = partMes[i]; if (v) ctx.fillText(fmt(v), bar.x, bar.y - 10); });
+        ctx.save(); ctx.font = `700 ${labelSize}px ${Chart.defaults.font.family}`; ctx.fillStyle = '#dbe9f8'; ctx.textAlign = 'center';
+        meta.data.forEach((bar, i) => { const v = partMes[i]; if (v && (!M || v >= 1000)) ctx.fillText(fmt(v), bar.x, bar.y - 10); });
         ctx.restore();
       }
     };
@@ -561,27 +638,27 @@
       data: {
         labels: MESES,
         datasets: [
-          { type: 'bar', label: 'Atendimentos no mês', data: partMes, borderRadius: 10, maxBarThickness: 54, order: 2,
+          { type: 'bar', label: 'Atendimentos no mês', data: partMes, borderRadius: M ? 5 : 10, maxBarThickness: M ? 18 : 54, order: 2,
             backgroundColor: c => { const { ctx, chartArea } = c.chart; if (!chartArea) return '#2f6db5';
               const g = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top); g.addColorStop(0, 'rgba(47,109,181,.35)'); g.addColorStop(1, '#79b4f2'); return g; },
             hoverBackgroundColor: '#a8d0ff' },
           { type: 'line', label: 'Acumulado no ano', data: cum, yAxisID: 'y1', order: 1, borderColor: '#f2b84b', backgroundColor: '#f2b84b',
-            borderWidth: 3, tension: .35, pointRadius: 4, pointHoverRadius: 7, pointBackgroundColor: '#071a30', pointBorderWidth: 3 }
+            borderWidth: M ? 2 : 3, tension: .35, pointRadius: M ? 2 : 4, pointHoverRadius: 7, pointBackgroundColor: '#071a30', pointBorderWidth: 3 }
         ]
       },
       options: {
         responsive: false, maintainAspectRatio: false, devicePixelRatio: 2, locale: 'pt-BR', layout: { padding: { top: 24 } },
         interaction: { mode: 'index', intersect: false },
-        plugins: { legend, tooltip: { padding: 14, titleFont: { size: 16 }, bodyFont: { size: 14 }, footerFont: { size: 13, weight: 400 },
+        plugins: { legend: legendCfg(), tooltip: { padding: 14, titleFont: { size: 16 }, bodyFont: { size: 14 }, footerFont: { size: 13, weight: 400 },
           callbacks: {
             label: c => ` ${c.dataset.label}: ${fmt(c.parsed.y)}`,
             footer: items => { const i = items[0].dataIndex; const ev = T.filter(t => t.mes === i + 1 && t.participantes > 0).sort((a, b) => b.participantes - a.participantes).slice(0, 3);
               return ev.length ? ['', 'Maiores eventos:', ...ev.map(t => `• ${cap(t.evento)}: ${fmt(t.participantes)}`)] : []; }
           } } },
         scales: {
-          x: { grid: { display: false }, ticks: { color: '#dbe9f8', font: { size: 16, weight: 600 } } },
+          x: { grid: { display: false }, ticks: { color: '#dbe9f8', maxRotation: 0, autoSkip: false, font: { size: M ? 10 : 16, weight: 600 } } },
           y: { beginAtZero: true, grid, border: { display: false }, ticks: { callback: v => fmt(v) } },
-          y1: { position: 'right', beginAtZero: true, grid: { display: false }, border: { display: false }, ticks: { color: '#f2b84b', callback: v => fmt(v) } }
+          y1: { display: !M, position: 'right', beginAtZero: true, grid: { display: false }, border: { display: false }, ticks: { color: '#f2b84b', callback: v => fmt(v) } }
         }
       },
       plugins: [valueLabels]
@@ -606,6 +683,17 @@
   }
   const chartsOf = { 3: ['mes', 'ring'], 4: ['resp'], 6: ['part'] };
 
+  // Anima números, barras e gráficos de um slide
+  function reveal(i, instant) {
+    slides[i].querySelectorAll('[data-count]').forEach(el => countUp(el, K[el.dataset.count], instant));
+    if (i === 2) {
+      document.getElementById('feitaMeter').style.width = `${pctN(K.feita, K.prop)}%`;
+      document.getElementById('cancMeter').style.width = `${pctN(K.canc, K.prop)}%`;
+    }
+    (chartsOf[i] || []).forEach(k => { const c = charts[k]; if (instant) { c.update('none'); } else { c.reset(); c.update(); } });
+    document.getElementById('ringPct').textContent = `${pct(K.feita, K.prop)}%`;
+  }
+
   function go(i, instant) {
     i = Math.max(0, Math.min(slides.length - 1, i));
     slides.forEach((s, j) => { s.classList.toggle('active', j === i); s.classList.toggle('prev', j < i); });
@@ -614,17 +702,14 @@
     document.getElementById('prevBtn').disabled = i === 0;
     document.getElementById('nextBtn').disabled = i === slides.length - 1;
     document.getElementById('progress').style.width = `${(i + 1) / slides.length * 100}%`;
-    slides[i].querySelectorAll('[data-count]').forEach(el => countUp(el, K[el.dataset.count], instant));
-    document.getElementById('feitaMeter').style.width = i === 2 ? `${pctN(K.feita, K.prop)}%` : '0';
-    document.getElementById('cancMeter').style.width = i === 2 ? `${pctN(K.canc, K.prop)}%` : '0';
-    (chartsOf[i] || []).forEach(k => { const c = charts[k]; if (instant) { c.update('none'); } else { c.reset(); c.update(); } });
-    document.getElementById('ringPct').textContent = `${pct(K.feita, K.prop)}%`;
-    if (!instant) history.replaceState(null, '', `#${i + 1}`);
+    if (i !== 2) { document.getElementById('feitaMeter').style.width = '0'; document.getElementById('cancMeter').style.width = '0'; }
+    reveal(i, instant);
+    if (!instant && !mobile) history.replaceState(null, '', `#${i + 1}`);
   }
   document.getElementById('prevBtn').onclick = () => go(cur - 1);
   document.getElementById('nextBtn').onclick = () => go(cur + 1);
   document.addEventListener('keydown', e => {
-    if (e.target.tagName === 'INPUT') return;
+    if (e.target.tagName === 'INPUT' || mobile) return;
     if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
     if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
     if (e.key === 'Home') go(0);
@@ -632,25 +717,69 @@
   });
   let tx = null;
   document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
-  document.addEventListener('touchend', e => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 60) go(cur + (dx < 0 ? 1 : -1)); tx = null; });
+  document.addEventListener('touchend', e => { if (tx == null || mobile) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 60) go(cur + (dx < 0 ? 1 : -1)); tx = null; });
   // Toque/clique abre o detalhe dos boxes (telas sem mouse)
   document.querySelectorAll('.box').forEach(b => b.addEventListener('click', () => b.classList.toggle('open')));
 
-  // ---------- Escala do palco ----------
+  // ---------- Escala do palco / modo celular ----------
   const stage = document.getElementById('stage');
-  function fit() {
-    const s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
-    stage.style.transform = `translate(-50%, -50%) scale(${s})`;
+  const isMobileView = () => { const w = window.innerWidth, h = window.innerHeight; return w < 900 || (w < h && w < 1100); };
+
+  // Textos de ajuda: "passe o mouse" no computador, "toque" no celular
+  const helpTexts = [...document.querySelectorAll('.hint, .more-hint')].map(el => {
+    const d = el.textContent;
+    const m = d.replace('Passe o mouse sobre as barras', 'Toque nas barras')
+               .replace('Passe o mouse sobre um mês', 'Toque em um mês')
+               .replace('passe o mouse ▸ detalhes', 'toque ▸ detalhes')
+               .replace(/^detalhes$/, 'toque ▸ detalhes')
+               .replace('Use as setas ← → do teclado ou os botões abaixo para navegar', 'Role a tela para ver todos os resultados');
+    return { el, d, m };
+  });
+
+  function tuneCharts(m) {
+    labelSize = m ? 10 : 14;
+    M = m;
+    // Recria os gráficos com tamanhos de fonte/barras adequados à tela
+    Object.keys(charts).forEach(k => { charts[k].destroy(); delete charts[k]; });
+    makeCharts();
+    helpTexts.forEach(h => { h.el.textContent = m ? h.m : h.d; });
   }
-  window.addEventListener('resize', fit); fit();
+
+  let mobile = null;
+  function fit() {
+    const m = isMobileView() && !document.body.classList.contains('exporting');
+    if (m !== mobile) {
+      mobile = m;
+      document.documentElement.classList.toggle('mobile', m);
+      tuneCharts(m);
+      if (m) slides.forEach(s => { if (s.getBoundingClientRect().top < window.innerHeight) s.classList.add('seen'); });
+    }
+    if (m) stage.style.transform = 'none';
+    else stage.style.transform = `translate(-50%, -50%) scale(${Math.min(window.innerWidth / 1600, window.innerHeight / 900)})`;
+    sizeCharts();
+    Object.values(charts).forEach(c => c.update('none'));
+  }
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(fit, 120); });
+
+  // No celular, cada seção se anima quando aparece na tela
+  const seenIO = new IntersectionObserver(entries => entries.forEach(en => {
+    if (!mobile || !en.isIntersecting) return;
+    const s = en.target, i = slides.indexOf(s);
+    if (s.dataset.revealed) return;
+    s.dataset.revealed = '1'; s.classList.add('seen'); reveal(i);
+  }), { threshold: 0.2 });
+  slides.forEach(s => seenIO.observe(s));
+  fit();
 
   // ---------- PDF ----------
   const pdfBtn = document.getElementById('pdfBtn');
   pdfBtn.addEventListener('click', async () => {
     if (!window.jspdf || !window.html2canvas) { window.print(); return; }
     pdfBtn.disabled = true;
-    const voltar = cur;
+    const voltar = cur, scrollY0 = window.scrollY;
     document.body.classList.add('exporting');
+    fit();
     try {
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [1600, 900], hotfixes: ['px_scaling'], compress: true });
@@ -670,12 +799,14 @@
       document.body.classList.remove('exporting');
       fit();
       go(voltar, true);
+      if (mobile) window.scrollTo(0, scrollY0);
       pdfBtn.disabled = false;
     }
   });
 
   const start = parseInt(location.hash.slice(1), 10);
   go(Number.isFinite(start) ? start - 1 : 0);
+  if (mobile && Number.isFinite(start) && slides[start - 1]) slides[start - 1].scrollIntoView();
 })();
 </script>
 </body>
