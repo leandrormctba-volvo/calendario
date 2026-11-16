@@ -84,6 +84,15 @@
   .chip { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 22px; min-width: 210px; }
   .chip b { display: block; font-size: 34px; font-weight: 800; font-variant-numeric: tabular-nums; }
   .chip span { font-size: 14px; color: var(--muted); }
+  .chip-pct b { color: var(--feita); }
+  .chip .mini { height: 6px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; margin-top: 10px; }
+  .chip .mini span { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--feita); transition: width 1.2s cubic-bezier(.2,.7,.2,1) .3s; }
+
+  /* Número do slide: abaixo da barra de navegação (no PDF continua no canto do slide) */
+  .counter { position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 12px; letter-spacing: .08em; color: var(--faint); z-index: 20; font-variant-numeric: tabular-nums; pointer-events: none; }
+  .pageno { display: none; }
+  body.exporting .pageno { display: block; }
+  body.exporting .counter { display: none; }
   .cover .nav-hint { margin-top: 48px; }
 
   /* Boxes de KPI com detalhe no hover */
@@ -184,7 +193,7 @@
   .hl span { font-size: 14px; color: var(--muted); }
 
   /* Controles (fora do palco) */
-  .ctrl { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; background: rgba(7,26,48,.75); border: 1px solid var(--line); border-radius: 999px; padding: 6px 8px; z-index: 20; }
+  .ctrl { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; background: rgba(7,26,48,.75); border: 1px solid var(--line); border-radius: 999px; padding: 6px 8px; z-index: 20; }
   .ctrl button { width: 36px; height: 36px; border-radius: 50%; border: 0; background: transparent; color: var(--ink); cursor: pointer; display: grid; place-items: center; transition: background .2s; }
   .ctrl button:hover:not(:disabled) { background: rgba(255,255,255,.1); }
   .ctrl button:disabled { opacity: .3; cursor: default; }
@@ -207,10 +216,11 @@
   /* ================= Versão celular: rolagem vertical, uma coluna ================= */
   /* Mesmo passador de slides do PC: um slide por tela, deslize para o lado */
   html.mobile #stage { left: 0; top: 0; width: 100%; height: 100%; transform: none !important; }
-  html.mobile .slide { padding: 62px 18px 92px; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; user-select: none; -webkit-user-select: none; }
+  html.mobile .slide { padding: 62px 18px 106px; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; user-select: none; -webkit-user-select: none; }
   html.mobile .slide input { user-select: text; -webkit-user-select: text; }
   html.mobile .slide.active .anim { animation-delay: calc(var(--d, 0) * 70ms + 80ms); }
-  html.mobile .ctrl { bottom: 14px; padding: 4px 6px; gap: 4px; }
+  html.mobile .ctrl { bottom: 28px; padding: 4px 6px; gap: 4px; }
+  html.mobile .counter { bottom: 8px; font-size: 11px; }
   html.mobile .ctrl > button { width: 34px; height: 34px; }
   html.mobile .dots { gap: 6px; }
   html.mobile .dots button { width: 8px; height: 8px; }
@@ -311,6 +321,7 @@
       <div class="chips anim" style="--d:3">
         <div class="chip"><b data-count="prop">0</b><span>tarefas propostas</span></div>
         <div class="chip"><b data-count="feita">0</b><span>realizadas</span></div>
+        <div class="chip chip-pct"><b id="coverPct">0%</b><span>das atividades realizadas</span><div class="mini"><span id="coverBar"></span></div></div>
         <div class="chip"><b data-count="part">0</b><span>atendimentos</span></div>
       </div>
       <div class="nav-hint anim" style="--d:4"><span class="hint">Use as setas ← → do teclado ou os botões abaixo para navegar</span></div>
@@ -436,6 +447,7 @@
   <div class="dots" id="dots"></div>
   <button id="nextBtn" aria-label="Próximo slide"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
 </div>
+<div class="counter" id="counter"></div>
 <div class="toast" id="toast">Gerando PDF…</div>
 
 <script>
@@ -691,6 +703,10 @@
   // Anima números, barras e gráficos de um slide
   function reveal(i, instant) {
     slides[i].querySelectorAll('[data-count]').forEach(el => countUp(el, K[el.dataset.count], instant));
+    if (i === 1) {
+      document.getElementById('coverPct').textContent = `${pct(K.feita, K.prop)}%`;
+      document.getElementById('coverBar').style.width = `${pctN(K.feita, K.prop)}%`;
+    }
     if (i === 2) {
       document.getElementById('feitaMeter').style.width = `${pctN(K.feita, K.prop)}%`;
       document.getElementById('cancMeter').style.width = `${pctN(K.canc, K.prop)}%`;
@@ -708,6 +724,8 @@
     document.getElementById('nextBtn').disabled = i === slides.length - 1;
     document.getElementById('progress').style.width = `${(i + 1) / slides.length * 100}%`;
     if (i !== 2) { document.getElementById('feitaMeter').style.width = '0'; document.getElementById('cancMeter').style.width = '0'; }
+    if (i !== 1) document.getElementById('coverBar').style.width = '0';
+    document.getElementById('counter').textContent = `${i + 1} de ${slides.length}`;
     reveal(i, instant);
     slides[i].scrollTop = 0;
     if (!instant) history.replaceState(null, '', `#${i + 1}`);
@@ -803,7 +821,7 @@
         go(i, true);
         await new Promise(r => setTimeout(r, 250));
         const canvas = await html2canvas(slides[i], { scale: 1.5, backgroundColor: '#071a30', width: 1600, height: 900, windowWidth: 1600, windowHeight: 900, scrollX: 0, scrollY: 0, logging: false,
-          ignoreElements: el => el.id === 'toast' || el.id === 'pdfBtn' || el.id === 'progress' || (el.classList && el.classList.contains('ctrl')) });
+          ignoreElements: el => el.id === 'toast' || el.id === 'counter' || el.id === 'pdfBtn' || el.id === 'progress' || (el.classList && el.classList.contains('ctrl')) });
         if (i > 0) pdf.addPage([1600, 900], 'landscape');
         pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 1600, 900);
       }
