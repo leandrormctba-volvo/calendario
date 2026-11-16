@@ -2,7 +2,7 @@
 
 Dashboard dos eventos do calendário 2026, gerado a partir da planilha **Kanban calendário** (aba *Responsabilidades*).
 
-🔗 **Dashboard online:** https://leandrormctba-volvo.github.io/calendario/
+🔗 **Dashboard online:** https://leandrormctba-volvo.github.io/calendario-av-2026/
 
 ## A apresentação (6 slides)
 
