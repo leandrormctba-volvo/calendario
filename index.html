@@ -51,8 +51,8 @@
   .deco.c { width: 260px; height: 260px; left: -120px; bottom: -120px; border: 1px solid rgba(121,180,242,0.18); }
 
   /* Marca e rodapé presentes em todos os slides */
-  .brand { position: absolute; left: 96px; top: 40px; display: flex; align-items: center; gap: 12px; font-size: 17px; font-weight: 600; letter-spacing: .06em; color: var(--ice); opacity: .9; }
-  .brand .mark { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--sky); display: grid; place-items: center; font-size: 12px; font-weight: 800; color: var(--sky); letter-spacing: 0; }
+  .brand { position: absolute; left: 96px; top: 34px; display: inline-flex; align-items: center; background: #ffffff; padding: 9px 16px; border-radius: 10px; box-shadow: 0 4px 18px rgba(0,0,0,.25); }
+  .brand img { display: block; height: 24px; width: auto; }
   .pageno { position: absolute; right: 96px; bottom: 36px; font-size: 14px; color: var(--faint); letter-spacing: .12em; font-variant-numeric: tabular-nums; }
   .foot { position: absolute; left: 96px; bottom: 36px; font-size: 13px; color: var(--faint); }
 
@@ -378,7 +378,7 @@
   // ---------- Marca + numeração em todos os slides ----------
   const slides = [...document.querySelectorAll('.slide')];
   slides.forEach((s, i) => {
-    s.insertAdjacentHTML('afterbegin', `<div class="brand"><span class="mark">AV</span>Associação Volvo</div>`);
+    s.insertAdjacentHTML('afterbegin', `<div class="brand"><img src="assets/logo-associacao-volvo.png" alt="Associação Volvo"></div>`);
     s.insertAdjacentHTML('beforeend', `<div class="pageno">${String(i + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}</div>`);
   });
 
@@ -641,7 +641,8 @@
       for (let i = 0; i < slides.length; i++) {
         go(i, true);
         await new Promise(r => setTimeout(r, 250));
-        const canvas = await html2canvas(slides[i], { scale: 1.5, backgroundColor: '#071a30', width: 1600, height: 900, windowWidth: 1600, windowHeight: 900, scrollX: 0, scrollY: 0, logging: false });
+        const canvas = await html2canvas(slides[i], { scale: 1.5, backgroundColor: '#071a30', width: 1600, height: 900, windowWidth: 1600, windowHeight: 900, scrollX: 0, scrollY: 0, logging: false,
+          ignoreElements: el => el.id === 'toast' || el.id === 'pdfBtn' || el.id === 'progress' || (el.classList && el.classList.contains('ctrl')) });
         if (i > 0) pdf.addPage([1600, 900], 'landscape');
         pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 1600, 900);
       }
