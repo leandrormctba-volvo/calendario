@@ -51,8 +51,16 @@
   .deco.c { width: 260px; height: 260px; left: -120px; bottom: -120px; border: 1px solid rgba(121,180,242,0.18); }
 
   /* Marca e rodapé presentes em todos os slides */
-  .brand { position: absolute; left: 96px; top: 34px; display: inline-flex; align-items: center; background: #ffffff; padding: 9px 16px; border-radius: 10px; box-shadow: 0 4px 18px rgba(0,0,0,.25); }
-  .brand img { display: block; height: 24px; width: auto; }
+  .brand { position: absolute; left: 0; right: 0; top: 40px; display: flex; justify-content: center; pointer-events: none; }
+  .brand img { display: block; height: 26px; width: auto; opacity: .95; }
+  .brand.lg { top: 96px; }
+  .brand.lg img { height: 52px; opacity: 1; }
+
+  /* Abertura */
+  .opening { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 40px; }
+  .opening h1 { margin: 0; font-size: 128px; line-height: .98; font-weight: 800; letter-spacing: -.035em; }
+  .opening h1 .yr { display: block; color: var(--sky); }
+  .opening .rule { width: 120px; height: 4px; border-radius: 99px; background: var(--sky); margin: 44px auto 0; }
   .pageno { position: absolute; right: 96px; bottom: 36px; font-size: 14px; color: var(--faint); letter-spacing: .12em; font-variant-numeric: tabular-nums; }
   .foot { position: absolute; left: 96px; bottom: 36px; font-size: 13px; color: var(--faint); }
 
@@ -206,11 +214,19 @@
 
 <div id="viewport"><div id="stage">
 
-  <!-- 1. Capa -->
-  <section class="slide" data-title="Capa">
+  <!-- 1. Abertura -->
+  <section class="slide" data-title="Abertura">
+    <div class="deco a"></div><div class="deco b"></div><div class="deco c"></div>
+    <div class="opening">
+      <h1 class="anim" style="--d:1">Calendário de Eventos<span class="yr">2026 AV</span></h1>
+      <div class="rule anim" style="--d:2"></div>
+    </div>
+  </section>
+
+  <!-- 2. Capa / resumo -->
+  <section class="slide" data-title="Resumo do ano">
     <div class="deco a"></div><div class="deco b"></div><div class="deco c"></div>
     <div class="cover">
-      <span class="tag anim" style="--d:0">META</span>
       <h1 class="anim" style="--d:1">Calendário de Eventos<span class="yr">2026 AV</span></h1>
       <p class="lead anim" style="--d:2" id="coverLead"></p>
       <div class="chips anim" style="--d:3">
@@ -378,7 +394,7 @@
   // ---------- Marca + numeração em todos os slides ----------
   const slides = [...document.querySelectorAll('.slide')];
   slides.forEach((s, i) => {
-    s.insertAdjacentHTML('afterbegin', `<div class="brand"><img src="assets/logo-associacao-volvo.png" alt="Associação Volvo"></div>`);
+    s.insertAdjacentHTML('afterbegin', `<div class="brand${i === 0 ? ' lg' : ''}"><img src="assets/logo-associacao-volvo-branca.png" alt="Associação Volvo"></div>`);
     s.insertAdjacentHTML('beforeend', `<div class="pageno">${String(i + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}</div>`);
   });
 
@@ -588,7 +604,7 @@
     const step = now => { const p = Math.min((now - t0) / dur, 1); el.textContent = fmt(Math.round(to * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(step); };
     requestAnimationFrame(step);
   }
-  const chartsOf = { 2: ['mes', 'ring'], 3: ['resp'], 5: ['part'] };
+  const chartsOf = { 3: ['mes', 'ring'], 4: ['resp'], 6: ['part'] };
 
   function go(i, instant) {
     i = Math.max(0, Math.min(slides.length - 1, i));
@@ -599,8 +615,8 @@
     document.getElementById('nextBtn').disabled = i === slides.length - 1;
     document.getElementById('progress').style.width = `${(i + 1) / slides.length * 100}%`;
     slides[i].querySelectorAll('[data-count]').forEach(el => countUp(el, K[el.dataset.count], instant));
-    document.getElementById('feitaMeter').style.width = i === 1 ? `${pctN(K.feita, K.prop)}%` : '0';
-    document.getElementById('cancMeter').style.width = i === 1 ? `${pctN(K.canc, K.prop)}%` : '0';
+    document.getElementById('feitaMeter').style.width = i === 2 ? `${pctN(K.feita, K.prop)}%` : '0';
+    document.getElementById('cancMeter').style.width = i === 2 ? `${pctN(K.canc, K.prop)}%` : '0';
     (chartsOf[i] || []).forEach(k => { const c = charts[k]; if (instant) { c.update('none'); } else { c.reset(); c.update(); } });
     document.getElementById('ringPct').textContent = `${pct(K.feita, K.prop)}%`;
     if (!instant) history.replaceState(null, '', `#${i + 1}`);

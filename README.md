@@ -4,17 +4,18 @@ Dashboard dos eventos do calendário 2026, gerado a partir da planilha **Kanban 
 
 🔗 **Dashboard online:** https://leandrormctba-volvo.github.io/calendario-av-2026/
 
-## A apresentação (6 slides)
+## A apresentação (7 slides)
 
-1. **Capa**: Meta · Calendário de Eventos 2026 AV.
-2. **Os números de 2026**: tarefas propostas, realizadas e canceladas. Passe o mouse nos boxes para ver os detalhes.
-3. **Comparativo mensal**: propostas × realizadas × canceladas. Passe o mouse em um mês para ver o que foi realizado e por quem. Ao lado, o % realizado do ano e até o momento.
-4. **Responsáveis pelas atividades**: tarefas de cada pessoa por situação, com ranking.
-5. **Resumo por responsável + pesquisa de eventos**: tabela e busca de participantes por evento.
-6. **Atendimentos por mês**: atendimentos de cada mês, total acumulado e destaques do ano.
+1. **Abertura**: logo da Associação Volvo e o título Calendário de Eventos 2026 AV, centralizados.
+2. **Resumo do ano**: título, período e os números principais.
+3. **Os números de 2026**: tarefas propostas, realizadas e canceladas. Passe o mouse nos boxes para ver os detalhes.
+4. **Comparativo mensal**: propostas × realizadas × canceladas. Passe o mouse em um mês para ver o que foi realizado e por quem. Ao lado, o % realizado do ano e até o momento.
+5. **Responsáveis pelas atividades**: tarefas de cada pessoa por situação, com ranking.
+6. **Resumo por responsável + pesquisa de eventos**: tabela e busca de participantes por evento.
+7. **Atendimentos por mês**: atendimentos de cada mês, total acumulado e destaques do ano.
 
 Navegue com as setas ← → do teclado, com os botões embaixo ou deslizando o dedo (no celular).
-O botão **Baixar PDF** (canto superior direito) baixa os 6 slides em um arquivo PDF.
+O botão **Baixar PDF** (canto superior direito) baixa os 7 slides em um arquivo PDF.
 
 ## Como abrir
 
