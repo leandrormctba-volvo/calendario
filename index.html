@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calendário de Eventos 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="data.js"></script>
+<style>
+  :root {
+    --bg: #f4f6f9; --card: #ffffff; --ink: #14202e; --muted: #5d6b7c; --line: #e3e8ee;
+    --accent: #1f4e8c; --accent-soft: #e6eef8;
+    --c-prop: #8796ab; --c-feita: #1f7a5c; --c-canc: #c8553d; --c-transf: #d99a2b; --c-and: #3a7bd5; --c-pend: #b8c2cf;
+    --c-part: #1f4e8c;
+    --shadow: 0 1px 2px rgba(20,32,46,.06), 0 4px 16px rgba(20,32,46,.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f151c; --card: #18212b; --ink: #e8edf3; --muted: #93a1b2; --line: #2a3542;
+      --accent: #7fb0ff; --accent-soft: #1d2b3d;
+      --c-prop: #8796ab; --c-feita: #3fb68b; --c-canc: #e2735c; --c-transf: #e8b04b; --c-and: #6ea4f0; --c-pend: #4d5a69;
+      --c-part: #7fb0ff; --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f151c; --card: #18212b; --ink: #e8edf3; --muted: #93a1b2; --line: #2a3542;
+    --accent: #7fb0ff; --accent-soft: #1d2b3d;
+    --c-prop: #8796ab; --c-feita: #3fb68b; --c-canc: #e2735c; --c-transf: #e8b04b; --c-and: #6ea4f0; --c-pend: #4d5a69;
+    --c-part: #7fb0ff; --shadow: none;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 Inter, system-ui, sans-serif; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 24px 16px 48px; }
+  header { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; justify-content: space-between; margin-bottom: 20px; }
+  h1 { margin: 0; font-size: 24px; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 10px; }
+  label.f { display: flex; flex-direction: column; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); gap: 4px; }
+  select, input[type=search] {
+    font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 7px 10px; min-width: 160px;
+  }
+  select:focus, input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .grid { display: grid; gap: 16px; }
+  .kpis { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); margin-bottom: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow); min-width: 0; }
+  .kpi .lbl { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .kpi .val { font-size: 30px; font-weight: 700; letter-spacing: -.02em; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .kpi .note { font-size: 12px; color: var(--muted); }
+  .kpi.feita .val { color: var(--c-feita); } .kpi.canc .val { color: var(--c-canc); } .kpi.part .val { color: var(--c-part); }
+  .bar { height: 8px; background: var(--accent-soft); border-radius: 99px; overflow: hidden; margin: 8px 0 4px; }
+  .bar > span { display: block; height: 100%; background: var(--c-feita); border-radius: 99px; }
+  .two { grid-template-columns: 3fr 2fr; margin-bottom: 16px; }
+  .halves { grid-template-columns: 1fr 1fr; margin-bottom: 16px; }
+  @media (max-width: 900px) { .two, .halves { grid-template-columns: 1fr; } }
+  h2 { font-size: 15px; margin: 0 0 2px; }
+  .card .desc { color: var(--muted); font-size: 12px; margin-bottom: 12px; }
+  .chart { position: relative; height: 300px; }
+  .chart.tall { height: 340px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--card); cursor: pointer; user-select: none; white-space: nowrap; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  .scroll { max-height: 420px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; }
+  .scroll table { min-width: 560px; }
+  @media (max-width: 760px) { .hide-sm { display: none; } }
+  .pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
+  .p-Realizada { background: color-mix(in srgb, var(--c-feita) 16%, transparent); color: var(--c-feita); }
+  .p-Cancelada { background: color-mix(in srgb, var(--c-canc) 16%, transparent); color: var(--c-canc); }
+  .p-Transferida { background: color-mix(in srgb, var(--c-transf) 18%, transparent); color: var(--c-transf); }
+  .p-Em { background: color-mix(in srgb, var(--c-and) 16%, transparent); color: var(--c-and); }
+  .p-Pendente { background: color-mix(in srgb, var(--c-pend) 30%, transparent); color: var(--muted); }
+  .searchbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-bottom: 12px; }
+  .searchbar input { flex: 1; min-width: 220px; }
+  .total-box { background: var(--accent-soft); border-radius: 10px; padding: 8px 14px; }
+  .total-box b { font-size: 22px; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .total-box span { display: block; font-size: 11px; color: var(--muted); }
+  .resp-table td:first-child { font-weight: 500; }
+  details { margin-top: 16px; color: var(--muted); font-size: 12px; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--ink); }
+  details ul { margin: 8px 0 0; padding-left: 18px; }
+  .empty { padding: 24px; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Calendário de Eventos 2026</h1>
+      <div class="sub" id="sub"></div>
+    </div>
+    <div class="filters">
+      <label class="f">Mês <select id="fMes"></select></label>
+      <label class="f">Responsável <select id="fResp"></select></label>
+      <label class="f">Categoria <select id="fCat"></select></label>
+    </div>
+  </header>
+
+  <section class="grid kpis">
+    <div class="card kpi"><div class="lbl">Tarefas propostas</div><div class="val" id="kProp">–</div><div class="note" id="kPropN"></div></div>
+    <div class="card kpi feita"><div class="lbl">Realizadas</div><div class="val" id="kFeita">–</div><div class="note" id="kFeitaN"></div></div>
+    <div class="card kpi canc"><div class="lbl">Canceladas</div><div class="val" id="kCanc">–</div><div class="note" id="kCancN"></div></div>
+    <div class="card kpi"><div class="lbl">% realizado do ano</div><div class="val" id="kPct">–</div><div class="bar"><span id="kPctBar"></span></div><div class="note" id="kPctN"></div></div>
+    <div class="card kpi part"><div class="lbl">Total de atendimentos</div><div class="val" id="kPart">–</div><div class="note" id="kPartN"></div></div>
+  </section>
+
+  <section class="grid two">
+    <div class="card">
+      <h2>Comparativo mensal</h2>
+      <div class="desc">Tarefas propostas × realizadas × canceladas em cada mês</div>
+      <div class="chart tall"><canvas id="chMes"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Tarefas por responsável</h2>
+      <div class="desc">Quantidade de tarefas sob responsabilidade de cada pessoa, por situação</div>
+      <div class="chart tall"><canvas id="chResp"></canvas></div>
+    </div>
+  </section>
+
+  <section class="grid halves">
+    <div class="card">
+      <h2>Atendimentos por mês</h2>
+      <div class="desc">Soma de participantes dos eventos de cada mês</div>
+      <div class="chart"><canvas id="chPart"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Resumo por responsável</h2>
+      <div class="desc">Tarefas, conclusão e pessoas atendidas</div>
+      <div class="scroll" style="max-height:300px">
+        <table class="resp-table"><thead><tr><th>Responsável</th><th class="n">Tarefas</th><th class="n">Realizadas</th><th class="n">Canceladas</th><th class="n">% feito</th><th class="n">Atendimentos</th></tr></thead><tbody id="tResp"></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Pesquisar evento</h2>
+    <div class="desc">Digite o nome do evento (ex.: poker, truco, corrida) para ver quantos participantes teve. Clique no cabeçalho para ordenar.</div>
+    <div class="searchbar">
+      <input type="search" id="busca" placeholder="Buscar evento…" list="listaEventos" autocomplete="off">
+      <datalist id="listaEventos"></datalist>
+      <div class="total-box"><b id="bPart">0</b><span id="bInfo">participantes</span></div>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th data-k="evento">Evento</th><th data-k="mes">Mês</th><th data-k="data">Data</th><th data-k="responsavel">Responsável</th>
+          <th data-k="categoria" class="hide-sm">Categoria</th><th data-k="situacao">Situação</th><th class="n" data-k="participantes">Participantes</th>
+        </tr></thead>
+        <tbody id="tEventos"></tbody>
+      </table>
+    </div>
+    <details>
+      <summary>Como os números são calculados</summary>
+      <ul>
+        <li><b>Mês</b>: o bloco do mês em que a tarefa está na aba Responsabilidades.</li>
+        <li><b>Realizada</b>: status FEITO. <b>Cancelada</b>: status CANCELADO ou NÃO REALIZADO. Transferidas, em andamento e pendentes aparecem à parte.</li>
+        <li><b>% realizado do ano</b>: realizadas ÷ propostas do ano. “Até agora” considera só os meses até o mês atual.</li>
+        <li><b>Atendimentos</b>: soma da coluna PARTICIPANTES. Quando a coluna está vazia e a observação diz “N participantes”, esse número é usado.</li>
+        <li id="infer"></li>
+      </ul>
+    </details>
+  </section>
+</div>
+
+<script>
+(() => {
+  const D = window.DADOS;
+  if (!D) { document.body.innerHTML = '<p class="empty">Arquivo data.js não encontrado. Rode atualizar-dados.ps1.</p>'; return; }
+  const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const MESES_L = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const SITS = ['Realizada','Em andamento','Pendente','Transferida','Cancelada'];
+  const T = D.tarefas.map(t => ({ ...t, participantes: t.participantes ?? null }));
+  const fmt = n => n.toLocaleString('pt-BR');
+  const pctN = (a, b) => b ? Math.round(a / b * 1000) / 10 : 0;
+  const pct = (a, b) => pctN(a, b).toLocaleString('pt-BR');
+  const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const hoje = new Date();
+  const mesAtual = hoje.getFullYear() > D.ano ? 12 : (hoje.getFullYear() < D.ano ? 0 : hoje.getMonth() + 1);
+
+  document.getElementById('sub').textContent = `Aba Responsabilidades · ${T.length} tarefas · dados de ${D.atualizadoEm}`;
+
+  // Filtros
+  const uniq = k => [...new Set(T.map(t => t[k]).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  const fill = (id, opts, all) => {
+    const s = document.getElementById(id);
+    s.innerHTML = `<option value="">${all}</option>` + opts.map(o => `<option value="${o.v ?? o}">${o.l ?? o}</option>`).join('');
+  };
+  fill('fMes', MESES_L.map((l, i) => ({ v: i + 1, l })), 'Todos os meses');
+  fill('fResp', uniq('responsavel'), 'Todos');
+  fill('fCat', uniq('categoria'), 'Todas');
+  document.getElementById('listaEventos').innerHTML = [...new Set(T.map(t => t.evento))].map(e => `<option value="${e.replace(/"/g, '&quot;')}">`).join('');
+
+  const f = { mes: '', resp: '', cat: '', busca: '' };
+  const filtradas = (ignoraMes) => T.filter(t =>
+    (ignoraMes || !f.mes || t.mes == f.mes) && (!f.resp || t.responsavel === f.resp) && (!f.cat || t.categoria === f.cat));
+
+  // Gráficos
+  Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
+  Chart.defaults.font.size = 12;
+  const charts = {};
+  const sitColor = s => css({ 'Realizada': '--c-feita', 'Cancelada': '--c-canc', 'Transferida': '--c-transf', 'Em andamento': '--c-and', 'Pendente': '--c-pend' }[s]);
+  const baseOpts = () => ({
+    responsive: true, maintainAspectRatio: false, animation: { duration: 300 }, locale: 'pt-BR', layout: { padding: { left: 6 } },
+    plugins: { legend: { position: 'bottom', labels: { color: css('--muted'), boxWidth: 12, boxHeight: 12, useBorderRadius: true, borderRadius: 3 } },
+               tooltip: { mode: 'index', intersect: false } },
+    scales: {
+      x: { ticks: { color: css('--muted') }, grid: { display: false }, border: { color: css('--line') } },
+      y: { beginAtZero: true, ticks: { color: css('--muted'), precision: 0 }, grid: { color: css('--line') }, border: { display: false } }
+    }
+  });
+
+  function render() {
+    const base = filtradas(false);
+    const anual = filtradas(true);
+    const n = s => base.filter(t => t.situacao === s).length;
+    const prop = base.length, feita = n('Realizada'), canc = n('Cancelada');
+    const part = base.reduce((a, t) => a + (t.participantes || 0), 0);
+    const comPart = base.filter(t => t.participantes > 0).length;
+
+    document.getElementById('kProp').textContent = fmt(prop);
+    document.getElementById('kPropN').textContent = `${n('Pendente') + n('Em andamento')} a fazer · ${n('Transferida')} transferidas`;
+    document.getElementById('kFeita').textContent = fmt(feita);
+    document.getElementById('kFeitaN').textContent = `${pct(feita, prop)}% das propostas`;
+    document.getElementById('kCanc').textContent = fmt(canc);
+    document.getElementById('kCancN').textContent = `${pct(canc, prop)}% das propostas`;
+    document.getElementById('kPart').textContent = fmt(part);
+    document.getElementById('kPartN').textContent = `em ${comPart} eventos com participantes registrados`;
+
+    const aFeita = anual.filter(t => t.situacao === 'Realizada').length;
+    const ate = anual.filter(t => t.mes <= mesAtual);
+    const ateFeita = ate.filter(t => t.situacao === 'Realizada').length;
+    document.getElementById('kPct').textContent = `${pct(aFeita, anual.length)}%`;
+    document.getElementById('kPctBar').style.width = `${Math.min(pctN(aFeita, anual.length), 100)}%`;
+    document.getElementById('kPctN').textContent = `${aFeita} de ${anual.length} no ano · até ${MESES_L[mesAtual - 1] || '—'}: ${pct(ateFeita, ate.length)}%`;
+
+    // Mensal (sempre mostra o ano todo, respeitando responsável/categoria)
+    const porMes = s => MESES.map((_, i) => anual.filter(t => t.mes === i + 1 && (!s || t.situacao === s)).length);
+    const realce = (cor) => MESES.map((_, i) => !f.mes || f.mes == i + 1 ? cor : cor + '40');
+    upsert('chMes', 'bar', {
+      labels: MESES,
+      datasets: [
+        { label: 'Propostas', data: porMes(), backgroundColor: realce(css('--c-prop')), borderRadius: 4, maxBarThickness: 22 },
+        { label: 'Realizadas', data: porMes('Realizada'), backgroundColor: realce(css('--c-feita')), borderRadius: 4, maxBarThickness: 22 },
+        { label: 'Canceladas', data: porMes('Cancelada'), backgroundColor: realce(css('--c-canc')), borderRadius: 4, maxBarThickness: 22 }
+      ]
+    }, baseOpts());
+
+    // Responsáveis (empilhado por situação)
+    const resps = [...new Set(base.map(t => t.responsavel || '(sem responsável)'))]
+      .map(r => ({ r, n: base.filter(t => (t.responsavel || '(sem responsável)') === r).length }))
+      .sort((a, b) => b.n - a.n).map(x => x.r);
+    const ro = baseOpts();
+    ro.indexAxis = 'y';
+    ro.scales.x.stacked = true; ro.scales.y.stacked = true;
+    ro.scales.x.grid = { color: css('--line') }; ro.scales.y.grid = { display: false };
+    ro.scales.x.ticks.precision = 0;
+    upsert('chResp', 'bar', {
+      labels: resps,
+      datasets: SITS.map(s => ({
+        label: s, backgroundColor: sitColor(s), borderRadius: 3, maxBarThickness: 26,
+        data: resps.map(r => base.filter(t => (t.responsavel || '(sem responsável)') === r && t.situacao === s).length)
+      }))
+    }, ro);
+
+    // Atendimentos por mês
+    const po = baseOpts();
+    po.plugins.legend.display = false;
+    po.plugins.tooltip.callbacks = { label: c => ` ${fmt(c.parsed.y)} participantes` };
+    upsert('chPart', 'bar', {
+      labels: MESES,
+      datasets: [{ label: 'Participantes', data: MESES.map((_, i) => anual.filter(t => t.mes === i + 1).reduce((a, t) => a + (t.participantes || 0), 0)),
+                   backgroundColor: realce(css('--c-part')), borderRadius: 4, maxBarThickness: 28 }]
+    }, po);
+
+    // Tabela responsáveis
+    document.getElementById('tResp').innerHTML = resps.map(r => {
+      const g = base.filter(t => (t.responsavel || '(sem responsável)') === r);
+      const fe = g.filter(t => t.situacao === 'Realizada').length;
+      return `<tr><td>${r}</td><td class="n">${g.length}</td><td class="n">${fe}</td><td class="n">${g.filter(t => t.situacao === 'Cancelada').length}</td>
+              <td class="n">${pct(fe, g.length)}%</td><td class="n">${fmt(g.reduce((a, t) => a + (t.participantes || 0), 0))}</td></tr>`;
+    }).join('') || '<tr><td colspan="6" class="empty">Nenhuma tarefa</td></tr>';
+
+    renderBusca();
+  }
+
+  // Busca de eventos
+  let ord = { k: 'mes', dir: 1 };
+  const norm = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  function renderBusca() {
+    const q = norm(f.busca).trim();
+    let rows = filtradas(false).filter(t => !q || norm(t.evento).includes(q));
+    rows.sort((a, b) => {
+      const va = a[ord.k] ?? -1, vb = b[ord.k] ?? -1;
+      return (typeof va === 'number' && typeof vb === 'number' ? va - vb : String(va).localeCompare(String(vb), 'pt-BR')) * ord.dir;
+    });
+    const tot = rows.reduce((a, t) => a + (t.participantes || 0), 0);
+    document.getElementById('bPart').textContent = fmt(tot);
+    document.getElementById('bInfo').textContent = `participantes em ${rows.length} evento${rows.length === 1 ? '' : 's'}`;
+    const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    document.getElementById('tEventos').innerHTML = rows.map(t => `<tr>
+      <td>${esc(t.evento)}</td><td>${MESES[t.mes - 1]}</td><td>${esc(t.data) || '—'}</td><td>${esc(t.responsavel) || '—'}</td>
+      <td class="hide-sm">${esc(t.categoria) || '—'}</td><td><span class="pill p-${t.situacao.split(' ')[0]}">${t.situacao}${t.inferido ? '*' : ''}</span></td>
+      <td class="n">${t.participantes != null ? fmt(t.participantes) : '—'}</td></tr>`).join('')
+      || '<tr><td colspan="7" class="empty">Nenhum evento encontrado</td></tr>';
+  }
+  document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
+    const k = th.dataset.k;
+    ord = { k, dir: ord.k === k ? -ord.dir : (k === 'participantes' ? -1 : 1) };
+    renderBusca();
+  }));
+
+  function upsert(id, type, data, options) {
+    if (charts[id]) { charts[id].data = data; charts[id].options = options; charts[id].update(); return; }
+    charts[id] = new Chart(document.getElementById(id), { type, data, options });
+  }
+
+  const inf = T.filter(t => t.inferido);
+  document.getElementById('infer').innerHTML = inf.length
+    ? `<b>Marcadas com *</b>: ${inf.length} tarefas sem status na planilha, mas com 100% ou participantes registrados, contadas como realizadas: ${inf.map(t => `${t.evento} (${MESES[t.mes - 1]})`).join('; ')}. Vale preencher o status delas na planilha.`
+    : '';
+
+  [['fMes', 'mes'], ['fResp', 'resp'], ['fCat', 'cat']].forEach(([id, k]) =>
+    document.getElementById(id).addEventListener('change', e => { f[k] = e.target.value; render(); }));
+  document.getElementById('busca').addEventListener('input', e => { f.busca = e.target.value; renderBusca(); });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { Object.values(charts).forEach(c => c.destroy()); for (const k in charts) delete charts[k]; render(); });
+  render();
+})();
+</script>
+</body>
+</html>
