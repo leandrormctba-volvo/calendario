@@ -205,19 +205,23 @@
   body.exporting .toast { display: grid; }
 
   /* ================= Versão celular: rolagem vertical, uma coluna ================= */
-  html.mobile, html.mobile body { height: auto; overflow-x: hidden; overflow-y: auto; }
-  html.mobile #viewport { position: static; background: none; }
-  html.mobile #stage { position: static; width: auto; height: auto; transform: none !important; }
-  html.mobile .slide { position: relative; inset: auto; opacity: 1; visibility: visible; transform: none; transition: none; padding: 68px 18px 40px; border-bottom: 1px solid var(--line); }
-  html.mobile .slide .anim { opacity: 0; transform: translateY(14px); animation: none; }
-  html.mobile .slide.seen .anim { animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(var(--d, 0) * 80ms); }
+  /* Mesmo passador de slides do PC: um slide por tela, deslize para o lado */
+  html.mobile #stage { left: 0; top: 0; width: 100%; height: 100%; transform: none !important; }
+  html.mobile .slide { padding: 62px 18px 92px; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; user-select: none; -webkit-user-select: none; }
+  html.mobile .slide input { user-select: text; -webkit-user-select: text; }
+  html.mobile .slide.active .anim { animation-delay: calc(var(--d, 0) * 70ms + 80ms); }
+  html.mobile .ctrl { bottom: 14px; padding: 4px 6px; gap: 4px; }
+  html.mobile .ctrl > button { width: 34px; height: 34px; }
+  html.mobile .dots { gap: 6px; }
+  html.mobile .dots button { width: 8px; height: 8px; }
+  html.mobile .dots button.on { width: 22px; }
   html.mobile .brand { top: 24px; }
   html.mobile .brand img { height: 18px; }
   html.mobile .brand.lg { top: 52px; }
   html.mobile .brand.lg img { height: 34px; }
   html.mobile .deco.a { width: 340px; height: 340px; right: -150px; top: -120px; }
-  html.mobile .deco.b { width: 240px; height: 240px; right: -40px; bottom: -150px; }
-  html.mobile .slide:first-child { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; }
+  html.mobile .deco.b, html.mobile .deco.c { display: none; }
+  html.mobile .slide:first-child { display: flex; flex-direction: column; justify-content: center; }
   html.mobile .opening { height: auto; padding-top: 20px; }
   html.mobile .opening h1 { font-size: 46px; }
   html.mobile .opening .rule { margin-top: 26px; width: 80px; }
@@ -273,8 +277,9 @@
   html.mobile .total b { font-size: 40px; }
   html.mobile .hero-num { font-size: 64px; }
   html.mobile .hl b { font-size: 18px; }
-  html.mobile .ctrl, html.mobile .progress { display: none; }
-  html.mobile .pdf-btn { position: fixed; top: auto; bottom: 18px; right: 16px; padding: 12px 16px; font-size: 13px; border-radius: 999px; background: var(--blue); border-color: rgba(255,255,255,.25); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+
+  html.mobile .pdf-btn { top: 12px; right: 12px; width: 36px; height: 36px; padding: 0; justify-content: center; border-radius: 50%; }
+  html.mobile .pdf-btn span { display: none; }
   html.mobile .ttip { left: 0 !important; right: 0; min-width: 0; max-width: none; padding: 14px 16px; }
   html.mobile .ttip h5 { font-size: 18px; }
 </style>
@@ -283,7 +288,7 @@
 <div class="progress" id="progress"></div>
 <button class="pdf-btn" id="pdfBtn" title="Baixar a apresentação em PDF">
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>
-  Baixar PDF
+  <span>Baixar PDF</span>
 </button>
 
 <div id="viewport"><div id="stage">
@@ -704,20 +709,40 @@
     document.getElementById('progress').style.width = `${(i + 1) / slides.length * 100}%`;
     if (i !== 2) { document.getElementById('feitaMeter').style.width = '0'; document.getElementById('cancMeter').style.width = '0'; }
     reveal(i, instant);
-    if (!instant && !mobile) history.replaceState(null, '', `#${i + 1}`);
+    slides[i].scrollTop = 0;
+    if (!instant) history.replaceState(null, '', `#${i + 1}`);
   }
   document.getElementById('prevBtn').onclick = () => go(cur - 1);
   document.getElementById('nextBtn').onclick = () => go(cur + 1);
   document.addEventListener('keydown', e => {
-    if (e.target.tagName === 'INPUT' || mobile) return;
+    if (e.target.tagName === 'INPUT') return;
     if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
     if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
     if (e.key === 'Home') go(0);
     if (e.key === 'End') go(slides.length - 1);
   });
-  let tx = null;
-  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
-  document.addEventListener('touchend', e => { if (tx == null || mobile) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 60) go(cur + (dx < 0 ? 1 : -1)); tx = null; });
+  // Deslizar o dedo para o lado passa o slide (ignora rolagem vertical e a tabela que rola para o lado)
+  let tx = null, ty = 0;
+  const scrollsSideways = el => { for (; el && el !== document.body; el = el.parentElement) { if (el.scrollWidth > el.clientWidth + 2 && /(auto|scroll)/.test(getComputedStyle(el).overflowX)) return true; } return false; };
+  document.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1 || scrollsSideways(e.target)) { tx = null; return; }
+    tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    if (tx == null) return;
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    tx = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) go(cur + (dx < 0 ? 1 : -1));
+  });
+  // No modo celular, arrastar com o mouse também passa o slide (janela estreita no PC)
+  let mx = null, my = 0;
+  document.addEventListener('mousedown', e => { if (!mobile || e.button !== 0 || e.target.closest('input, button, canvas') || scrollsSideways(e.target)) { mx = null; return; } mx = e.clientX; my = e.clientY; });
+  document.addEventListener('mouseup', e => {
+    if (mx == null) return;
+    const dx = e.clientX - mx, dy = e.clientY - my;
+    mx = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.4) { window.getSelection().removeAllRanges(); go(cur + (dx < 0 ? 1 : -1)); }
+  });
   // Toque/clique abre o detalhe dos boxes (telas sem mouse)
   document.querySelectorAll('.box').forEach(b => b.addEventListener('click', () => b.classList.toggle('open')));
 
@@ -732,7 +757,7 @@
                .replace('Passe o mouse sobre um mês', 'Toque em um mês')
                .replace('passe o mouse ▸ detalhes', 'toque ▸ detalhes')
                .replace(/^detalhes$/, 'toque ▸ detalhes')
-               .replace('Use as setas ← → do teclado ou os botões abaixo para navegar', 'Role a tela para ver todos os resultados');
+               .replace('Use as setas ← → do teclado ou os botões abaixo para navegar', 'Deslize para o lado para passar os slides');
     return { el, d, m };
   });
 
@@ -752,7 +777,6 @@
       mobile = m;
       document.documentElement.classList.toggle('mobile', m);
       tuneCharts(m);
-      if (m) slides.forEach(s => { if (s.getBoundingClientRect().top < window.innerHeight) s.classList.add('seen'); });
     }
     if (m) stage.style.transform = 'none';
     else stage.style.transform = `translate(-50%, -50%) scale(${Math.min(window.innerWidth / 1600, window.innerHeight / 900)})`;
@@ -762,14 +786,6 @@
   let rt;
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(fit, 120); });
 
-  // No celular, cada seção se anima quando aparece na tela
-  const seenIO = new IntersectionObserver(entries => entries.forEach(en => {
-    if (!mobile || !en.isIntersecting) return;
-    const s = en.target, i = slides.indexOf(s);
-    if (s.dataset.revealed) return;
-    s.dataset.revealed = '1'; s.classList.add('seen'); reveal(i);
-  }), { threshold: 0.2 });
-  slides.forEach(s => seenIO.observe(s));
   fit();
 
   // ---------- PDF ----------
@@ -777,7 +793,7 @@
   pdfBtn.addEventListener('click', async () => {
     if (!window.jspdf || !window.html2canvas) { window.print(); return; }
     pdfBtn.disabled = true;
-    const voltar = cur, scrollY0 = window.scrollY;
+    const voltar = cur;
     document.body.classList.add('exporting');
     fit();
     try {
@@ -799,14 +815,12 @@
       document.body.classList.remove('exporting');
       fit();
       go(voltar, true);
-      if (mobile) window.scrollTo(0, scrollY0);
       pdfBtn.disabled = false;
     }
   });
 
   const start = parseInt(location.hash.slice(1), 10);
   go(Number.isFinite(start) ? start - 1 : 0);
-  if (mobile && Number.isFinite(start) && slides[start - 1]) slides[start - 1].scrollIntoView();
 })();
 </script>
 </body>

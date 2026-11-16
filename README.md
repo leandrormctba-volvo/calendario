@@ -15,7 +15,7 @@ Dashboard dos eventos do calendário 2026, gerado a partir da planilha **Kanban 
 7. **Atendimentos por mês**: atendimentos de cada mês, total acumulado e destaques do ano.
 
 **No computador:** navegue com as setas ← → do teclado ou com os botões embaixo.
-**No celular (ou janela estreita):** a apresentação vira uma página de rolagem, uma seção embaixo da outra; toque nos boxes e nos gráficos para ver os detalhes.
+**No celular (ou janela estreita):** os mesmos 7 slides, um por tela. Deslize o dedo para o lado (ou toque nas setas/bolinhas embaixo) para passar; se o slide for maior que a tela, role para baixo dentro dele. Toque nos boxes e nos gráficos para ver os detalhes.
 O botão **Baixar PDF** (canto superior direito) baixa os 7 slides em um arquivo PDF.
 
 ## Como abrir
