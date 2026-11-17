@@ -144,7 +144,8 @@
   .side { display: flex; flex-direction: column; gap: 12px; }
   .ring { position: relative; height: 190px; margin: 0; }
   .ring .center { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; pointer-events: none; }
-  .ring .center b { font-size: 54px; font-weight: 800; letter-spacing: -.03em; }
+  .ring .center b { font-size: 38px; font-weight: 800; letter-spacing: -.03em; }
+  .box .pct small { font-size: 16px; font-weight: 500; color: var(--faint); margin-left: 6px; letter-spacing: 0; }
   .ring .center span { font-size: 14px; color: var(--muted); }
   .stat { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 17px; }
   .stat b { font-size: 22px; white-space: nowrap; font-variant-numeric: tabular-nums; }
@@ -275,7 +276,8 @@
   html.mobile .panel { padding: 16px; border-radius: 16px; }
   html.mobile .split > .panel:first-child { height: 360px; position: relative; z-index: 3; }
   html.mobile .ring { height: 170px; }
-  html.mobile .ring .center b { font-size: 40px; }
+  html.mobile .ring .center b { font-size: 34px; }
+  html.mobile .box .pct small { display: block; margin: 2px 0 0; font-size: 12px; }
   html.mobile .side h3 { font-size: 12px; }
   html.mobile .stat { font-size: 15px; }
   html.mobile .stat b { font-size: 19px; }
@@ -385,9 +387,9 @@
         <div class="chartbox"><canvas id="chMes"></canvas></div>
       </div>
       <div class="panel side anim" style="--d:3">
-        <h3>% realizado do ano</h3>
+        <h3>Média de execução do ano</h3>
         <div class="ring"><canvas id="chRing"></canvas><div class="center"><b id="ringPct">0%</b><span id="ringSub"></span></div></div>
-        <div class="stat"><span>Até o momento <small id="ateLbl"></small></span><b id="atePct"></b></div>
+        <div class="stat"><span>Realizadas/propostas <small id="ateLbl"></small></span><b id="atePct"></b></div>
         <div class="stat"><span>Realizadas</span><b id="sFeita" style="color:var(--feita)"></b></div>
         <div class="stat"><span>Canceladas</span><b id="sCanc" style="color:var(--canc)"></b></div>
         <div class="stat"><span>A fazer / em andamento</span><b id="sPend"></b></div>
@@ -485,6 +487,9 @@
   const feitas = by('Realizada'), canc = by('Cancelada');
   // Média anual do % de execução, igual à planilha (linha de JANEIRO, coluna %)
   const MEDIA = D.mediaAnualPlanilha && typeof D.mediaAnualPlanilha.valor === 'number' ? D.mediaAnualPlanilha : null;
+  // % de execução exibido nos slides: média da planilha (ou realizadas ÷ propostas, se a planilha não tiver)
+  const EXEC_TXT = () => MEDIA ? MEDIA.texto : `${pct(K.feita, K.prop)}%`;
+  const EXEC_N = () => MEDIA ? Math.min(MEDIA.valor * 100, 100) : pctN(K.feita, K.prop);
   const K = {
     prop: T.length, feita: feitas.length, canc: canc.length,
     afazer: by('Pendente').length + by('Em andamento').length, transf: by('Transferida').length,
@@ -549,7 +554,7 @@
       <div><h4>Por categoria</h4>${dl(cats.map(c => [cap(c), T.filter(t => t.categoria === c).length]))}
         <h4 style="margin-top:26px">Por responsável</h4>${dl(resps.map(r => [r, T.filter(t => t.responsavel === r).length]))}</div>
     </div>`;
-  document.getElementById('feitaPct').textContent = `${pct(K.feita, K.prop)}%`;
+  document.getElementById('feitaPct').innerHTML = `${EXEC_TXT()} <small>média de execução</small>`;
   document.getElementById('cancPct').textContent = `${pct(K.canc, K.prop)}%`;
   document.getElementById('feitaDetail').innerHTML = `
     <div class="cols">
@@ -562,9 +567,9 @@
   // Lateral do mensal
   const realMes = MESES.map((_, i) => feitas.filter(t => t.mes === i + 1).length);
   const best = realMes.indexOf(Math.max(...realMes));
-  document.getElementById('ringSub').textContent = `${K.feita} de ${K.prop}`;
-  document.getElementById('ateLbl').textContent = `(até ${MESES[Math.max(mesAtual, 1) - 1]})`;
-  document.getElementById('atePct').textContent = `${pct(ateFeita, ate.length)}%`;
+  document.getElementById('ringSub').textContent = MEDIA ? 'média mensal' : `${K.feita} de ${K.prop}`;
+  document.getElementById('ateLbl').textContent = `(${K.feita}/${K.prop})`;
+  document.getElementById('atePct').textContent = `${pct(K.feita, K.prop)}%`;
   document.getElementById('sFeita').textContent = K.feita;
   document.getElementById('sCanc').textContent = K.canc;
   document.getElementById('sPend').textContent = K.afazer;
@@ -668,7 +673,7 @@
 
     charts.ring = new Chart(document.getElementById('chRing'), {
       type: 'doughnut',
-      data: { labels: ['Realizadas', 'Demais'], datasets: [{ data: [K.feita, K.prop - K.feita], backgroundColor: ['#3fc495', 'rgba(255,255,255,.08)'], borderWidth: 0, borderRadius: 8 }] },
+      data: { labels: ['Realizadas', 'Demais'], datasets: [{ data: [EXEC_N(), 100 - EXEC_N()], backgroundColor: ['#3fc495', 'rgba(255,255,255,.08)'], borderWidth: 0, borderRadius: 8 }] },
       options: { responsive: false, maintainAspectRatio: false, devicePixelRatio: 2, cutout: '80%', plugins: { legend: { display: false }, tooltip: { enabled: false } } }
     });
 
@@ -753,11 +758,11 @@
       document.getElementById('coverBar').style.width = `${MEDIA ? Math.min(MEDIA.valor * 100, 100) : pctN(K.feita, K.prop)}%`;
     }
     if (i === 2) {
-      document.getElementById('feitaMeter').style.width = `${pctN(K.feita, K.prop)}%`;
+      document.getElementById('feitaMeter').style.width = `${EXEC_N()}%`;
       document.getElementById('cancMeter').style.width = `${pctN(K.canc, K.prop)}%`;
     }
     (chartsOf[i] || []).forEach(k => { const c = charts[k]; if (instant) { c.update('none'); } else { c.reset(); c.update(); } });
-    document.getElementById('ringPct').textContent = `${pct(K.feita, K.prop)}%`;
+    document.getElementById('ringPct').textContent = EXEC_TXT();
   }
 
   function go(i, instant) {
