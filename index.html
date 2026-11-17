@@ -47,16 +47,12 @@
   .slide.prev { transform: translateX(-40px); }
   .deco { position: absolute; border-radius: 50%; pointer-events: none; }
 
-  /* Fundo animado: linhas de datas de calendário, bem transparentes */
+  /* Fundo: folha de calendário enquadrada, parada e bem transparente (desenhada em JS) */
   .slide { isolation: isolate; }
   .bgcal { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-  .bgrot { position: absolute; inset: -35% -25%; transform: rotate(-9deg); }
+  .bgrot { position: absolute; inset: 0; }
   html.mobile .bgcal { position: fixed; }
-  .bgtrack { position: absolute; inset: 0; background-repeat: repeat; background-size: 2600px 888px; animation: bgdrift 140s linear infinite; animation-play-state: paused; }
-  .slide.active .bgtrack { animation-play-state: running; }
-  html.mobile .bgtrack { background-size: 1560px 533px; animation-name: bgdriftm; }
-  @keyframes bgdrift { from { background-position: 0 0; } to { background-position: -2600px -888px; } }
-  @keyframes bgdriftm { from { background-position: 0 0; } to { background-position: -1560px -533px; } }
+  .bgtrack { position: absolute; inset: 0; background-repeat: no-repeat; background-size: cover; background-position: center; }
   .deco.a { width: 720px; height: 720px; right: -220px; top: -260px; background: rgba(47,109,181,0.16); }
   .deco.b { width: 420px; height: 420px; right: 120px; bottom: -260px; background: rgba(121,180,242,0.08); }
   .deco.c { width: 260px; height: 260px; left: -120px; bottom: -120px; border: 1px solid rgba(121,180,242,0.18); }
@@ -320,7 +316,7 @@
   <section class="slide" data-title="Abertura">
     <div class="deco a"></div><div class="deco b"></div><div class="deco c"></div>
     <div class="opening">
-      <h1 class="anim" style="--d:1">Calendário de Atividades<span class="yr">2026 AV</span></h1>
+      <h1 class="anim" style="--d:1">Calendário de Atividades<span class="yr">2026</span></h1>
       <div class="rule anim" style="--d:2"></div>
     </div>
   </section>
@@ -502,35 +498,49 @@
 
   // ---------- Marca + numeração em todos os slides ----------
   const slides = [...document.querySelectorAll('.slide')];
-  // Fundo de calendário: linhas de datas com alguns "eventos" coloridos.
-  // Desenhado uma vez numa imagem (leve para animar e para o PDF) e repetido em cada slide.
+  // Fundo: folha de calendário enquadrada (mês real de 2026), parada e bem transparente.
+  // Cada slide mostra um mês diferente. Desenhado numa imagem (leve para a tela e para o PDF).
   slides.forEach(s => s.insertAdjacentHTML('afterbegin', '<div class="bgcal" aria-hidden="true"><div class="bgrot"><div class="bgtrack"></div></div></div>'));
-  function drawCalendarBg() {
-    const MES = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
-    const W = 2600, RH = 74, H = RH * 12, S = 2;
+  function drawCalendarSheet(mes) {
+    const NOMES = ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'];
+    const SEM = ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
+    const W = 1600, H = 900, S = 2;
     const cv = document.createElement('canvas'); cv.width = W * S; cv.height = H * S;
     const g = cv.getContext('2d'); g.scale(S, S);
     const fam = getComputedStyle(document.body).fontFamily;
-    const EVC = ['rgba(121,180,242,.20)', 'rgba(63,196,149,.18)', 'rgba(242,184,75,.18)', 'rgba(239,122,98,.16)'];
-    for (let r = 0; r < 12; r++) {
-      const y = r * RH;
-      g.fillStyle = 'rgba(255,255,255,.035)'; g.fillRect(0, y, W, 1);
-      g.font = `800 13px ${fam}`; g.fillStyle = 'rgba(121,180,242,.16)'; g.fillText(`${MES[r]}  ${D.ano}`, 22, y + 43);
-      g.font = `700 30px ${fam}`;
-      for (let d = 1; d <= 31; d++) {
-        const x = 140 + (d - 1) * 79 + (r % 2 ? 38 : 0);
-        const h = (r * 31 + d) * 2654435761 % 97;
-        const txt = String(d).padStart(2, '0');
-        if (h < 9) {
-          const c = EVC[h % 4];
-          g.strokeStyle = c; g.lineWidth = 2; g.beginPath(); g.arc(x + 18, y + 33, 25, 0, Math.PI * 2); g.stroke();
-          g.fillStyle = c;
-        } else g.fillStyle = 'rgba(255,255,255,.03)';
-        g.fillText(txt, x, y + 44);
-      }
+    const line = 'rgba(255,255,255,.03)', ink = 'rgba(255,255,255,.032)', soft = 'rgba(255,255,255,.022)';
+    // folha levemente inclinada
+    g.translate(W / 2, H / 2); g.rotate(-4 * Math.PI / 180); g.translate(-W / 2, -H / 2);
+    const x0 = 150, y0 = 70, cw = 1300, ch = 780, r = 26;
+    // moldura arredondada
+    g.strokeStyle = line; g.lineWidth = 2;
+    g.beginPath(); g.moveTo(x0 + r, y0); g.arcTo(x0 + cw, y0, x0 + cw, y0 + ch, r); g.arcTo(x0 + cw, y0 + ch, x0, y0 + ch, r);
+    g.arcTo(x0, y0 + ch, x0, y0, r); g.arcTo(x0, y0, x0 + cw, y0, r); g.closePath(); g.stroke();
+    g.fillStyle = 'rgba(255,255,255,.012)'; g.fill();
+    // argolas do calendário
+    for (let k = 0; k < 8; k++) { const ax = x0 + 150 + k * 143; g.beginPath(); g.arc(ax, y0, 9, 0, Math.PI * 2); g.stroke(); g.beginPath(); g.moveTo(ax, y0 - 26); g.lineTo(ax, y0 + 4); g.stroke(); }
+    // cabeçalho: mês e ano
+    g.fillStyle = ink; g.font = `800 64px ${fam}`; g.fillText(NOMES[mes], x0 + 46, y0 + 108);
+    g.textAlign = 'right'; g.font = `700 44px ${fam}`; g.fillText(String(D.ano), x0 + cw - 46, y0 + 104); g.textAlign = 'left';
+    // grade 7 x 6
+    const gx = x0 + 40, gy = y0 + 160, gw = cw - 80, gh = ch - 200, colW = gw / 7, rowH = (gh - 44) / 6;
+    g.fillStyle = soft; g.font = `700 18px ${fam}`;
+    SEM.forEach((d, c) => g.fillText(d, gx + c * colW + 14, gy + 28));
+    g.fillStyle = line;
+    for (let c = 0; c <= 7; c++) g.fillRect(gx + c * colW, gy + 44, 1.5, rowH * 6);
+    for (let k = 0; k <= 6; k++) g.fillRect(gx, gy + 44 + k * rowH, gw, 1.5);
+    const first = new Date(D.ano, mes, 1).getDay(), dias = new Date(D.ano, mes + 1, 0).getDate();
+    g.font = `700 30px ${fam}`;
+    for (let d = 1; d <= dias; d++) {
+      const p = first + d - 1, c = p % 7, row = Math.floor(p / 7);
+      g.fillStyle = c === 0 ? soft : ink;
+      g.fillText(String(d), gx + c * colW + 16, gy + 44 + row * rowH + 40);
     }
-    const url = `url(${cv.toDataURL('image/png')})`;
-    document.querySelectorAll('.bgtrack').forEach(el => { el.style.backgroundImage = url; });
+    return `url(${cv.toDataURL('image/png')})`;
+  }
+  function drawCalendarBg() {
+    const base = Math.max(mesAtual, 1) - 1;
+    slides.forEach((s, i) => { s.querySelector('.bgtrack').style.backgroundImage = drawCalendarSheet((base + i) % 12); });
   }
   (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(drawCalendarBg);
 
