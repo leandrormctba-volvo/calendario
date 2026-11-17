@@ -90,6 +90,7 @@ try {
             status        = $status
             situacao      = $sit
             inferido      = $inferido
+            obs           = ($obs -replace '\s+', ' ')
         })
     }
     $wb.Close($false)

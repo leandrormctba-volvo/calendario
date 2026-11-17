@@ -1,5 +1,5 @@
 window.DADOS = {
-    "atualizadoEm":  "17/11/2026 09:25",
+    "atualizadoEm":  "17/11/2026 12:49",
     "ano":  2026,
     "mediaAnualPlanilha":  {
                                "valor":  0.8356189265280175,
@@ -29,7 +29,8 @@ window.DADOS = {
                         "data":  "",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  2,
@@ -40,7 +41,8 @@ window.DADOS = {
                         "data":  "06/02/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  2,
@@ -51,7 +53,8 @@ window.DADOS = {
                         "data":  "06/02/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 04h27 - (1º Luiz Oliveira, 2º Hideraldo Simon, 3ª Ketlin Garcia)"
                     },
                     {
                         "mes":  2,
@@ -62,7 +65,8 @@ window.DADOS = {
                         "data":  "25/02/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 02h05 - (1º Vagner Abucarub, 2º Eduardo Zerbato, 3º Welington Mafra)"
                     },
                     {
                         "mes":  2,
@@ -73,7 +77,8 @@ window.DADOS = {
                         "data":  "16/02/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  2,
@@ -84,7 +89,8 @@ window.DADOS = {
                         "data":  "28/02/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Campeões (categoria ouro - Ander Correia / Kaue Texeira - categoria prata Reinaldo stock / Danniel Fagundes - categoria mista Cleverton S. / Bruna"
                     },
                     {
                         "mes":  3,
@@ -95,7 +101,8 @@ window.DADOS = {
                         "data":  "04/03/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  3,
@@ -106,7 +113,8 @@ window.DADOS = {
                         "data":  "08/03/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  3,
@@ -117,7 +125,8 @@ window.DADOS = {
                         "data":  "03/10/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  3,
@@ -128,7 +137,8 @@ window.DADOS = {
                         "data":  "03/06/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 02h42 - (1º Wellington Paes, 2º Sandro Waltiach, 3º Vinicius Frigotto)"
                     },
                     {
                         "mes":  3,
@@ -139,7 +149,8 @@ window.DADOS = {
                         "data":  "20/03/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 03h04 - (1º Paul Campos, 2º Igor Silva, 3ª Manoela Arantes) - Nessa etapa foi realizado o churrasco com a persença de 66 participantes do Ranking"
                     },
                     {
                         "mes":  3,
@@ -150,7 +161,8 @@ window.DADOS = {
                         "data":  "13/03/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  3,
@@ -161,7 +173,8 @@ window.DADOS = {
                         "data":  "21/03/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  3,
@@ -172,7 +185,8 @@ window.DADOS = {
                         "data":  "16/03/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "de 16/03 a 30/04 - PESQUISA UNIFICADA COM 2ª ETAPA"
                     },
                     {
                         "mes":  3,
@@ -183,7 +197,8 @@ window.DADOS = {
                         "data":  "15/03/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  3,
@@ -194,7 +209,8 @@ window.DADOS = {
                         "data":  "22/03/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  3,
@@ -205,7 +221,8 @@ window.DADOS = {
                         "data":  "15/03/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "6 equipes inscritas (previsão de término até 24 de maio)"
                     },
                     {
                         "mes":  4,
@@ -216,7 +233,8 @@ window.DADOS = {
                         "data":  "05/04/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  4,
@@ -227,7 +245,8 @@ window.DADOS = {
                         "data":  "24/04/2026",
                         "status":  "",
                         "situacao":  "Realizada",
-                        "inferido":  true
+                        "inferido":  true,
+                        "obs":  ""
                     },
                     {
                         "mes":  4,
@@ -238,7 +257,8 @@ window.DADOS = {
                         "data":  "10/04/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 03h20 - (1º Paul Campos, 2º Gustavo Cunha, 3ª Alisson Santos)"
                     },
                     {
                         "mes":  4,
@@ -249,7 +269,8 @@ window.DADOS = {
                         "data":  "29/04/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 02h07 - (1º Gustavo Cunha, 2º André Luis, 3º Igor Silva)"
                     },
                     {
                         "mes":  4,
@@ -260,7 +281,8 @@ window.DADOS = {
                         "data":  "11/04/2026",
                         "status":  "CANCELADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  4,
@@ -271,7 +293,8 @@ window.DADOS = {
                         "data":  "05/04/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  4,
@@ -282,7 +305,8 @@ window.DADOS = {
                         "data":  "12/04/2026",
                         "status":  "CANCELADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "não tivemos equipes suficiente"
                     },
                     {
                         "mes":  4,
@@ -293,7 +317,8 @@ window.DADOS = {
                         "data":  "25/04/2026",
                         "status":  "",
                         "situacao":  "Realizada",
-                        "inferido":  true
+                        "inferido":  true,
+                        "obs":  "0.05"
                     },
                     {
                         "mes":  4,
@@ -304,7 +329,8 @@ window.DADOS = {
                         "data":  "09/04/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Horario de inicio 18H e Fim 22H30 (Campeão Eduardo Seiti , Vice Campeão Juliano Rocha e Terceiro lugar João Cano)"
                     },
                     {
                         "mes":  4,
@@ -315,7 +341,8 @@ window.DADOS = {
                         "data":  "28/04/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  4,
@@ -326,7 +353,8 @@ window.DADOS = {
                         "data":  "26/04/2026",
                         "status":  "",
                         "situacao":  "Realizada",
-                        "inferido":  true
+                        "inferido":  true,
+                        "obs":  ""
                     },
                     {
                         "mes":  4,
@@ -337,7 +365,8 @@ window.DADOS = {
                         "data":  "17/04/2026",
                         "status":  "",
                         "situacao":  "Pendente",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  5,
@@ -348,7 +377,8 @@ window.DADOS = {
                         "data":  "15/05/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  5,
@@ -359,7 +389,8 @@ window.DADOS = {
                         "data":  "15/05/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 03h12 - (1º Alvaro Gomes, 2º Rafael Mesquita, 3º Denniel Baggio)"
                     },
                     {
                         "mes":  5,
@@ -370,7 +401,8 @@ window.DADOS = {
                         "data":  "29/05/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 03h13 - (1º Leonardo Tourinho, 2º Luiz Oliveira, 3º Eder Berti)"
                     },
                     {
                         "mes":  5,
@@ -381,7 +413,8 @@ window.DADOS = {
                         "data":  "23/05/2026",
                         "status":  "",
                         "situacao":  "Pendente",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  5,
@@ -392,7 +425,8 @@ window.DADOS = {
                         "data":  "10/05/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  5,
@@ -403,7 +437,8 @@ window.DADOS = {
                         "data":  "15 e 29/11",
                         "status":  "FAZENDO",
                         "situacao":  "Em andamento",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "transferido para outubro"
                     },
                     {
                         "mes":  5,
@@ -414,7 +449,8 @@ window.DADOS = {
                         "data":  "23/05/2026",
                         "status":  "CANCELADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "cancelado por não atingimento do número mínimo de participantes"
                     },
                     {
                         "mes":  5,
@@ -425,7 +461,8 @@ window.DADOS = {
                         "data":  "23/05/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  5,
@@ -436,7 +473,8 @@ window.DADOS = {
                         "data":  "31/05/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Final 1x1 - penaltis 4x3 Campeão: Alemanha, 2º lugar: Japão, 3º lugar Nova Zelândia (venceu a Tunísia por 2a1)"
                     },
                     {
                         "mes":  5,
@@ -447,7 +485,8 @@ window.DADOS = {
                         "data":  "07/05/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  5,
@@ -458,7 +497,8 @@ window.DADOS = {
                         "data":  "28/05/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  5,
@@ -469,7 +509,8 @@ window.DADOS = {
                         "data":  "23/05/2026",
                         "status":  "NÃO REALIZADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "cancelado devido baixa procura"
                     },
                     {
                         "mes":  5,
@@ -480,7 +521,8 @@ window.DADOS = {
                         "data":  "31/05/2026",
                         "status":  "TRANSFERIDO",
                         "situacao":  "Transferida",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "trasnferido para agosto"
                     },
                     {
                         "mes":  5,
@@ -491,7 +533,8 @@ window.DADOS = {
                         "data":  "31/05/2026",
                         "status":  "FAZENDO",
                         "situacao":  "Em andamento",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  5,
@@ -502,7 +545,8 @@ window.DADOS = {
                         "data":  "27/05/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "de 27/05 a 15/07 - falta entregar premiação - PESQUISA UNIFICADA COM 1ª ETAPA"
                     },
                     {
                         "mes":  5,
@@ -513,7 +557,8 @@ window.DADOS = {
                         "data":  "31/05/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  5,
@@ -524,7 +569,8 @@ window.DADOS = {
                         "data":  "31/05/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  5,
@@ -535,7 +581,8 @@ window.DADOS = {
                         "data":  "17/05/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  6,
@@ -546,7 +593,8 @@ window.DADOS = {
                         "data":  "26/06/2026",
                         "status":  "",
                         "situacao":  "Realizada",
-                        "inferido":  true
+                        "inferido":  true,
+                        "obs":  ""
                     },
                     {
                         "mes":  6,
@@ -557,7 +605,8 @@ window.DADOS = {
                         "data":  "10/06/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 02h16 - (1º Jurandir Boz, 2º Deniel Baggio, 3º Gustavo Cunha)"
                     },
                     {
                         "mes":  6,
@@ -568,7 +617,8 @@ window.DADOS = {
                         "data":  "28/06/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  6,
@@ -579,7 +629,8 @@ window.DADOS = {
                         "data":  "14/06/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  6,
@@ -590,7 +641,8 @@ window.DADOS = {
                         "data":  "13/06/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  6,
@@ -601,7 +653,8 @@ window.DADOS = {
                         "data":  "19/06/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  6,
@@ -612,7 +665,8 @@ window.DADOS = {
                         "data":  "24/06/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  6,
@@ -623,7 +677,8 @@ window.DADOS = {
                         "data":  "29/06/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  6,
@@ -634,7 +689,8 @@ window.DADOS = {
                         "data":  "05/07/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  6,
@@ -645,7 +701,8 @@ window.DADOS = {
                         "data":  "02/06/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  6,
@@ -656,7 +713,8 @@ window.DADOS = {
                         "data":  "17/06/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 02h22 - (1º Ricardo Santos, 2º Fabiane Ferreira, 3º Patrick Juan)"
                     },
                     {
                         "mes":  6,
@@ -667,7 +725,8 @@ window.DADOS = {
                         "data":  "27/06/2026",
                         "status":  "CANCELADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "transferido para setembro com o tema Pizza"
                     },
                     {
                         "mes":  6,
@@ -678,7 +737,8 @@ window.DADOS = {
                         "data":  "07/06/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  6,
@@ -689,7 +749,8 @@ window.DADOS = {
                         "data":  "21/06/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  6,
@@ -700,7 +761,8 @@ window.DADOS = {
                         "data":  "28/06/2026",
                         "status":  "CANCELADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  7,
@@ -711,7 +773,8 @@ window.DADOS = {
                         "data":  "13 A 24/07/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  7,
@@ -722,7 +785,8 @@ window.DADOS = {
                         "data":  "09/07/2026",
                         "status":  "CANCELADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Somente 12 inscritos até 08/04 - cancelado por não atingimento do número mínimo de participantes"
                     },
                     {
                         "mes":  7,
@@ -733,7 +797,8 @@ window.DADOS = {
                         "data":  "01/07/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Classificados entre o 14º e 31º colocados, disputam 5 vagas para o torneio final"
                     },
                     {
                         "mes":  7,
@@ -744,7 +809,8 @@ window.DADOS = {
                         "data":  "03/07/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "13 mais bem colocados do ranking (1 não pode jogar). Disponibilizada 1 vaga a mais, para o 6º colocado da repescagem"
                     },
                     {
                         "mes":  7,
@@ -755,7 +821,8 @@ window.DADOS = {
                         "data":  "17/07/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 03h41 - (1º Gustavo Aires, 2º Paulo Ávila, 3º Marco Petterini)"
                     },
                     {
                         "mes":  7,
@@ -766,7 +833,8 @@ window.DADOS = {
                         "data":  "29/07/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 2h18 - (1º Caio Winicius, 2º Patrick Juan, 3º Vagner Abucarub)"
                     },
                     {
                         "mes":  7,
@@ -777,7 +845,8 @@ window.DADOS = {
                         "data":  "28/10/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  7,
@@ -788,7 +857,8 @@ window.DADOS = {
                         "data":  "18/07/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "8 Equipes Inscritas no 7Livre - Quarentinha e Femino serão relançados em agosto pois somente 3 equipes no Master e 2 no Feminino"
                     },
                     {
                         "mes":  7,
@@ -799,7 +869,8 @@ window.DADOS = {
                         "data":  "10/07/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Dupla campeã foi sérgio e genésio"
                     },
                     {
                         "mes":  7,
@@ -810,7 +881,8 @@ window.DADOS = {
                         "data":  "18/08/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  7,
@@ -821,7 +893,8 @@ window.DADOS = {
                         "data":  "13/07/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  7,
@@ -832,7 +905,8 @@ window.DADOS = {
                         "data":  "05/07/2026",
                         "status":  "CANCELADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  8,
@@ -843,7 +917,8 @@ window.DADOS = {
                         "data":  "09/08/2026",
                         "status":  "",
                         "situacao":  "Realizada",
-                        "inferido":  true
+                        "inferido":  true,
+                        "obs":  ""
                     },
                     {
                         "mes":  8,
@@ -854,7 +929,8 @@ window.DADOS = {
                         "data":  "08/08/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  8,
@@ -865,7 +941,8 @@ window.DADOS = {
                         "data":  "14/08/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Dupla campeã foi Clevinho e Adir"
                     },
                     {
                         "mes":  8,
@@ -876,7 +953,8 @@ window.DADOS = {
                         "data":  "14/08/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 3h16 - (1º Ricardo Santos, 2º Vinicius Frigotto, 3º Jonny Durão)"
                     },
                     {
                         "mes":  8,
@@ -887,7 +965,8 @@ window.DADOS = {
                         "data":  "26/08/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 1h42 - (1º Rafael Urtado, 2º Juarez Silva, 3º Marcelino Domingues)"
                     },
                     {
                         "mes":  8,
@@ -898,7 +977,8 @@ window.DADOS = {
                         "data":  "22/08/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  8,
@@ -909,7 +989,8 @@ window.DADOS = {
                         "data":  "",
                         "status":  "CANCELADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  8,
@@ -920,7 +1001,8 @@ window.DADOS = {
                         "data":  "04/08/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  8,
@@ -931,7 +1013,8 @@ window.DADOS = {
                         "data":  "01/08/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  8,
@@ -942,7 +1025,8 @@ window.DADOS = {
                         "data":  "16/08/2026",
                         "status":  "CANCELADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "devido a não bater o número mínimo"
                     },
                     {
                         "mes":  8,
@@ -953,7 +1037,8 @@ window.DADOS = {
                         "data":  "24/08/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  8,
@@ -964,7 +1049,8 @@ window.DADOS = {
                         "data":  "02/ago",
                         "status":  "NÃO REALIZADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  8,
@@ -975,7 +1061,8 @@ window.DADOS = {
                         "data":  "09/08/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  8,
@@ -986,7 +1073,8 @@ window.DADOS = {
                         "data":  "23/08/2026",
                         "status":  "FAZENDO",
                         "situacao":  "Em andamento",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  9,
@@ -997,7 +1085,8 @@ window.DADOS = {
                         "data":  "11/09/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  9,
@@ -1008,7 +1097,8 @@ window.DADOS = {
                         "data":  "18/09/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Término as 3h58 - (1º Eduardo Dias, 2º Laurent Passy, 3º Joarez Baida)"
                     },
                     {
                         "mes":  9,
@@ -1019,7 +1109,8 @@ window.DADOS = {
                         "data":  "30/09/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  9,
@@ -1030,7 +1121,8 @@ window.DADOS = {
                         "data":  "13/09/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  9,
@@ -1041,7 +1133,8 @@ window.DADOS = {
                         "data":  "19/9/2026",
                         "status":  "",
                         "situacao":  "Realizada",
-                        "inferido":  true
+                        "inferido":  true,
+                        "obs":  ""
                     },
                     {
                         "mes":  9,
@@ -1052,7 +1145,8 @@ window.DADOS = {
                         "data":  "20/09/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  9,
@@ -1063,7 +1157,8 @@ window.DADOS = {
                         "data":  "22/09/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  9,
@@ -1074,7 +1169,8 @@ window.DADOS = {
                         "data":  "28/09/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  9,
@@ -1085,7 +1181,8 @@ window.DADOS = {
                         "data":  "09/09/2026",
                         "status":  "FAZENDO",
                         "situacao":  "Em andamento",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "DE 09/09 A 19/10"
                     },
                     {
                         "mes":  10,
@@ -1096,7 +1193,8 @@ window.DADOS = {
                         "data":  "16/10/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  10,
@@ -1107,7 +1205,8 @@ window.DADOS = {
                         "data":  "07/10/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  10,
@@ -1118,7 +1217,8 @@ window.DADOS = {
                         "data":  "16/10/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  10,
@@ -1129,7 +1229,8 @@ window.DADOS = {
                         "data":  "28/10/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  10,
@@ -1140,7 +1241,8 @@ window.DADOS = {
                         "data":  "03/10/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  10,
@@ -1151,7 +1253,8 @@ window.DADOS = {
                         "data":  "10/11/2026",
                         "status":  "FAZENDO",
                         "situacao":  "Em andamento",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  10,
@@ -1162,7 +1265,8 @@ window.DADOS = {
                         "data":  "17/10/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  10,
@@ -1173,7 +1277,8 @@ window.DADOS = {
                         "data":  "08/10/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  10,
@@ -1184,7 +1289,8 @@ window.DADOS = {
                         "data":  "",
                         "status":  "NÃO REALIZADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  10,
@@ -1195,7 +1301,8 @@ window.DADOS = {
                         "data":  "26/10/2026",
                         "status":  "",
                         "situacao":  "Pendente",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "DE 26/10 A 03/12"
                     },
                     {
                         "mes":  10,
@@ -1206,7 +1313,8 @@ window.DADOS = {
                         "data":  "09/10/2026",
                         "status":  "CANCELADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "pacote lançado porem baixa adesao 4 inscritos - entendemos que foi devido ao alto valor"
                     },
                     {
                         "mes":  10,
@@ -1217,7 +1325,8 @@ window.DADOS = {
                         "data":  "24/10/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  10,
@@ -1228,7 +1337,8 @@ window.DADOS = {
                         "data":  "28/10/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "Teve 14 participantes"
                     },
                     {
                         "mes":  11,
@@ -1239,7 +1349,8 @@ window.DADOS = {
                         "data":  "06/11/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  11,
@@ -1250,7 +1361,8 @@ window.DADOS = {
                         "data":  "07/11/2026",
                         "status":  "",
                         "situacao":  "Pendente",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  11,
@@ -1261,7 +1373,8 @@ window.DADOS = {
                         "data":  "06/11/2026",
                         "status":  "",
                         "situacao":  "Realizada",
-                        "inferido":  true
+                        "inferido":  true,
+                        "obs":  ""
                     },
                     {
                         "mes":  11,
@@ -1272,7 +1385,8 @@ window.DADOS = {
                         "data":  "11/11/2026",
                         "status":  "",
                         "situacao":  "Realizada",
-                        "inferido":  true
+                        "inferido":  true,
+                        "obs":  ""
                     },
                     {
                         "mes":  11,
@@ -1283,7 +1397,8 @@ window.DADOS = {
                         "data":  "13/11/2026",
                         "status":  "",
                         "situacao":  "Realizada",
-                        "inferido":  true
+                        "inferido":  true,
+                        "obs":  ""
                     },
                     {
                         "mes":  11,
@@ -1294,7 +1409,8 @@ window.DADOS = {
                         "data":  "07/11/2026",
                         "status":  "",
                         "situacao":  "Pendente",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  11,
@@ -1305,7 +1421,8 @@ window.DADOS = {
                         "data":  "",
                         "status":  "",
                         "situacao":  "Pendente",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  11,
@@ -1316,7 +1433,8 @@ window.DADOS = {
                         "data":  "07/11/2026",
                         "status":  "CANCELADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  11,
@@ -1327,7 +1445,8 @@ window.DADOS = {
                         "data":  "15/11/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "21 participantes"
                     },
                     {
                         "mes":  11,
@@ -1338,7 +1457,8 @@ window.DADOS = {
                         "data":  "20/11/2026",
                         "status":  "",
                         "situacao":  "Pendente",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  11,
@@ -1349,7 +1469,8 @@ window.DADOS = {
                         "data":  "07/11/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  "11 participantes"
                     },
                     {
                         "mes":  11,
@@ -1360,7 +1481,8 @@ window.DADOS = {
                         "data":  "22/11/2026",
                         "status":  "NÃO REALIZADO",
                         "situacao":  "Cancelada",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  11,
@@ -1371,7 +1493,8 @@ window.DADOS = {
                         "data":  "29/11/2026",
                         "status":  "",
                         "situacao":  "Pendente",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  12,
@@ -1382,7 +1505,8 @@ window.DADOS = {
                         "data":  "",
                         "status":  "",
                         "situacao":  "Pendente",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  12,
@@ -1393,7 +1517,8 @@ window.DADOS = {
                         "data":  "",
                         "status":  "FAZENDO",
                         "situacao":  "Em andamento",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  12,
@@ -1404,7 +1529,8 @@ window.DADOS = {
                         "data":  "31/12/2026",
                         "status":  "",
                         "situacao":  "Pendente",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     },
                     {
                         "mes":  12,
@@ -1415,7 +1541,8 @@ window.DADOS = {
                         "data":  "05/12/2026",
                         "status":  "",
                         "situacao":  "Pendente",
-                        "inferido":  false
+                        "inferido":  false,
+                        "obs":  ""
                     }
                 ]
 };
