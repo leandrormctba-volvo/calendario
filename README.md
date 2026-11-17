@@ -10,7 +10,7 @@ Dashboard dos eventos do calendário 2026, gerado a partir da planilha **Kanban 
 2. **Resumo do ano**: título, período e os números principais, incluindo a média de execução do ano (a mesma da planilha: média do % de cada mês, linha de JANEIRO, coluna %).
 3. **Os números de 2026**: tarefas propostas, realizadas e canceladas. Passe o mouse nos boxes para ver os detalhes.
 4. **Comparativo mensal**: propostas × realizadas × canceladas. Passe o mouse em um mês para ver o que foi realizado e por quem. Ao lado, o % realizado do ano e até o momento.
-5. **Responsáveis pelas atividades**: tarefas de cada pessoa por situação, com ranking.
+5. **Responsáveis pelas atividades**: tarefas de cada pessoa por situação + busca de atividades com filtro (realizadas, canceladas, pendentes, em andamento, transferidas). Clique numa atividade para ver o motivo/observação da planilha.
 6. **Resumo por responsável + pesquisa de eventos**: tabela e busca de participantes por evento.
 7. **Atendimentos por mês**: atendimentos de cada mês, total acumulado e destaques do ano.
 
