@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Calendário de Eventos 2026 AV</title>
+<title>Calendário de Atividades 2026 AV</title>
 <meta name="description" content="Acesse aqui os resultados do Calendário de Atividades 2026 da AV — Associação Volvo.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Associação Volvo">
@@ -46,6 +46,17 @@
   .slide.active { opacity: 1; visibility: visible; transform: none; transition: opacity .55s ease, transform .55s ease; }
   .slide.prev { transform: translateX(-40px); }
   .deco { position: absolute; border-radius: 50%; pointer-events: none; }
+
+  /* Fundo animado: linhas de datas de calendário, bem transparentes */
+  .slide { isolation: isolate; }
+  .bgcal { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+  .bgrot { position: absolute; inset: -35% -25%; transform: rotate(-9deg); }
+  html.mobile .bgcal { position: fixed; }
+  .bgtrack { position: absolute; inset: 0; background-repeat: repeat; background-size: 2600px 888px; animation: bgdrift 140s linear infinite; animation-play-state: paused; }
+  .slide.active .bgtrack { animation-play-state: running; }
+  html.mobile .bgtrack { background-size: 1560px 533px; animation-name: bgdriftm; }
+  @keyframes bgdrift { from { background-position: 0 0; } to { background-position: -2600px -888px; } }
+  @keyframes bgdriftm { from { background-position: 0 0; } to { background-position: -1560px -533px; } }
   .deco.a { width: 720px; height: 720px; right: -220px; top: -260px; background: rgba(47,109,181,0.16); }
   .deco.b { width: 420px; height: 420px; right: 120px; bottom: -260px; background: rgba(121,180,242,0.08); }
   .deco.c { width: 260px; height: 260px; left: -120px; bottom: -120px; border: 1px solid rgba(121,180,242,0.18); }
@@ -307,7 +318,7 @@
   <section class="slide" data-title="Abertura">
     <div class="deco a"></div><div class="deco b"></div><div class="deco c"></div>
     <div class="opening">
-      <h1 class="anim" style="--d:1">Calendário de Eventos<span class="yr">2026 AV</span></h1>
+      <h1 class="anim" style="--d:1">Calendário de Atividades<span class="yr">2026 AV</span></h1>
       <div class="rule anim" style="--d:2"></div>
     </div>
   </section>
@@ -316,12 +327,12 @@
   <section class="slide" data-title="Resumo do ano">
     <div class="deco a"></div><div class="deco b"></div><div class="deco c"></div>
     <div class="cover">
-      <h1 class="anim" style="--d:1">Calendário de Eventos<span class="yr">2026 AV</span></h1>
+      <h1 class="anim" style="--d:1">Calendário de Atividades<span class="yr">2026 AV</span></h1>
       <p class="lead anim" style="--d:2" id="coverLead"></p>
       <div class="chips anim" style="--d:3">
         <div class="chip"><b data-count="prop">0</b><span>tarefas propostas</span></div>
         <div class="chip"><b data-count="feita">0</b><span>realizadas</span></div>
-        <div class="chip chip-pct"><b id="coverPct">0%</b><span>das atividades realizadas</span><div class="mini"><span id="coverBar"></span></div></div>
+        <div class="chip chip-pct" title="Média do % atingido em cada mês, igual à planilha"><b id="coverPct">0%</b><span>média de execução no ano</span><div class="mini"><span id="coverBar"></span></div></div>
         <div class="chip"><b data-count="part">0</b><span>atendimentos</span></div>
       </div>
       <div class="nav-hint anim" style="--d:4"><span class="hint">Use as setas ← → do teclado ou os botões abaixo para navegar</span></div>
@@ -472,6 +483,8 @@
   const hoje = new Date();
   const mesAtual = hoje.getFullYear() > D.ano ? 12 : (hoje.getFullYear() < D.ano ? 0 : hoje.getMonth() + 1);
   const feitas = by('Realizada'), canc = by('Cancelada');
+  // Média anual do % de execução, igual à planilha (linha de JANEIRO, coluna %)
+  const MEDIA = D.mediaAnualPlanilha && typeof D.mediaAnualPlanilha.valor === 'number' ? D.mediaAnualPlanilha : null;
   const K = {
     prop: T.length, feita: feitas.length, canc: canc.length,
     afazer: by('Pendente').length + by('Em andamento').length, transf: by('Transferida').length,
@@ -484,6 +497,38 @@
 
   // ---------- Marca + numeração em todos os slides ----------
   const slides = [...document.querySelectorAll('.slide')];
+  // Fundo de calendário: linhas de datas com alguns "eventos" coloridos.
+  // Desenhado uma vez numa imagem (leve para animar e para o PDF) e repetido em cada slide.
+  slides.forEach(s => s.insertAdjacentHTML('afterbegin', '<div class="bgcal" aria-hidden="true"><div class="bgrot"><div class="bgtrack"></div></div></div>'));
+  function drawCalendarBg() {
+    const MES = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+    const W = 2600, RH = 74, H = RH * 12, S = 2;
+    const cv = document.createElement('canvas'); cv.width = W * S; cv.height = H * S;
+    const g = cv.getContext('2d'); g.scale(S, S);
+    const fam = getComputedStyle(document.body).fontFamily;
+    const EVC = ['rgba(121,180,242,.20)', 'rgba(63,196,149,.18)', 'rgba(242,184,75,.18)', 'rgba(239,122,98,.16)'];
+    for (let r = 0; r < 12; r++) {
+      const y = r * RH;
+      g.fillStyle = 'rgba(255,255,255,.035)'; g.fillRect(0, y, W, 1);
+      g.font = `800 13px ${fam}`; g.fillStyle = 'rgba(121,180,242,.16)'; g.fillText(`${MES[r]}  ${D.ano}`, 22, y + 43);
+      g.font = `700 30px ${fam}`;
+      for (let d = 1; d <= 31; d++) {
+        const x = 140 + (d - 1) * 79 + (r % 2 ? 38 : 0);
+        const h = (r * 31 + d) * 2654435761 % 97;
+        const txt = String(d).padStart(2, '0');
+        if (h < 9) {
+          const c = EVC[h % 4];
+          g.strokeStyle = c; g.lineWidth = 2; g.beginPath(); g.arc(x + 18, y + 33, 25, 0, Math.PI * 2); g.stroke();
+          g.fillStyle = c;
+        } else g.fillStyle = 'rgba(255,255,255,.03)';
+        g.fillText(txt, x, y + 44);
+      }
+    }
+    const url = `url(${cv.toDataURL('image/png')})`;
+    document.querySelectorAll('.bgtrack').forEach(el => { el.style.backgroundImage = url; });
+  }
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(drawCalendarBg);
+
   slides.forEach((s, i) => {
     s.insertAdjacentHTML('afterbegin', `<div class="brand${i === 0 ? ' lg' : ''}"><img src="assets/logo-associacao-volvo-branca.png" alt="Associação Volvo"></div>`);
     s.insertAdjacentHTML('beforeend', `<div class="pageno">${String(i + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}</div>`);
@@ -495,7 +540,7 @@
 
   document.getElementById('propPills').innerHTML =
     `<span class="pill"><i style="background:var(--pend)"></i>${K.afazer} a fazer</span>
-     <span class="pill"><i style="background:var(--transf)"></i>${K.transf} transferidas</span>
+     <span class="pill"><i style="background:var(--transf)"></i>${K.transf} transferida${K.transf === 1 ? "" : "s"}</span>
      <span class="pill"><i style="background:var(--prop)"></i>${K.prop} propostas</span>`;
   const dl = rows => `<div class="dl">${rows.map(([k, v]) => `<span class="k">${k}</span><span class="v">${v}</span>`).join('')}</div>`;
   document.getElementById('propDetail').innerHTML = `
@@ -704,8 +749,8 @@
   function reveal(i, instant) {
     slides[i].querySelectorAll('[data-count]').forEach(el => countUp(el, K[el.dataset.count], instant));
     if (i === 1) {
-      document.getElementById('coverPct').textContent = `${pct(K.feita, K.prop)}%`;
-      document.getElementById('coverBar').style.width = `${pctN(K.feita, K.prop)}%`;
+      document.getElementById('coverPct').textContent = MEDIA ? MEDIA.texto : `${pct(K.feita, K.prop)}%`;
+      document.getElementById('coverBar').style.width = `${MEDIA ? Math.min(MEDIA.valor * 100, 100) : pctN(K.feita, K.prop)}%`;
     }
     if (i === 2) {
       document.getElementById('feitaMeter').style.width = `${pctN(K.feita, K.prop)}%`;
@@ -821,11 +866,11 @@
         go(i, true);
         await new Promise(r => setTimeout(r, 250));
         const canvas = await html2canvas(slides[i], { scale: 1.5, backgroundColor: '#071a30', width: 1600, height: 900, windowWidth: 1600, windowHeight: 900, scrollX: 0, scrollY: 0, logging: false,
-          ignoreElements: el => el.id === 'toast' || el.id === 'counter' || el.id === 'pdfBtn' || el.id === 'progress' || (el.classList && el.classList.contains('ctrl')) });
+          ignoreElements: el => (el.classList && el.classList.contains('bgcal') && el.parentElement !== slides[i]) || el.id === 'toast' || el.id === 'counter' || el.id === 'pdfBtn' || el.id === 'progress' || (el.classList && el.classList.contains('ctrl')) });
         if (i > 0) pdf.addPage([1600, 900], 'landscape');
         pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 1600, 900);
       }
-      pdf.save(`Calendario-Eventos-${D.ano}-AV.pdf`);
+      pdf.save(`Calendario-Atividades-${D.ano}-AV.pdf`);
     } catch (err) {
       console.error(err);
       alert('Não foi possível gerar o PDF. Tente novamente.');

@@ -1,6 +1,24 @@
 window.DADOS = {
-    "atualizadoEm":  "16/11/2026 00:22",
+    "atualizadoEm":  "17/11/2026 09:25",
     "ano":  2026,
+    "mediaAnualPlanilha":  {
+                               "valor":  0.8356189265280175,
+                               "texto":  "83,56%"
+                           },
+    "pctMesesPlanilha":  [
+                             null,
+                             1,
+                             1,
+                             0.81818181818181823,
+                             0.75,
+                             0.9285714285714286,
+                             0.75,
+                             0.7142857142857143,
+                             1,
+                             0.76923076923076927,
+                             0.46153846153846156,
+                             0.16666666666666666
+                         ],
     "tarefas":  [
                     {
                         "mes":  1,
@@ -205,11 +223,11 @@ window.DADOS = {
                         "evento":  "Torneio de Truco",
                         "categoria":  "ESPORTIVA",
                         "responsavel":  "Leandro Moreira",
-                        "participantes":  null,
+                        "participantes":  48,
                         "data":  "24/04/2026",
                         "status":  "",
-                        "situacao":  "Pendente",
-                        "inferido":  false
+                        "situacao":  "Realizada",
+                        "inferido":  true
                     },
                     {
                         "mes":  4,
@@ -326,11 +344,11 @@ window.DADOS = {
                         "evento":  "TORNEIO DE TRUCO",
                         "categoria":  "ESPORTIVA",
                         "responsavel":  "Leandro Moreira",
-                        "participantes":  null,
+                        "participantes":  44,
                         "data":  "15/05/2026",
-                        "status":  "",
+                        "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  true
+                        "inferido":  false
                     },
                     {
                         "mes":  5,
@@ -381,10 +399,10 @@ window.DADOS = {
                         "evento":  "Copa Volvo de Volei",
                         "categoria":  "ESPORTIVA",
                         "responsavel":  "Leandro Moreira",
-                        "participantes":  null,
-                        "data":  "30/05/2026",
-                        "status":  "TRANSFERIDO",
-                        "situacao":  "Transferida",
+                        "participantes":  90,
+                        "data":  "15 e 29/11",
+                        "status":  "FAZENDO",
+                        "situacao":  "Em andamento",
                         "inferido":  false
                     },
                     {
@@ -756,9 +774,9 @@ window.DADOS = {
                         "categoria":  "ESPORTIVA",
                         "responsavel":  "Leandro Moreira",
                         "participantes":  null,
-                        "data":  "27/07/2026",
-                        "status":  "",
-                        "situacao":  "Pendente",
+                        "data":  "28/10/2026",
+                        "status":  "FEITO",
+                        "situacao":  "Realizada",
                         "inferido":  false
                     },
                     {
@@ -779,9 +797,9 @@ window.DADOS = {
                         "responsavel":  "Leandro Moreira",
                         "participantes":  48,
                         "data":  "10/07/2026",
-                        "status":  "",
+                        "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  true
+                        "inferido":  false
                     },
                     {
                         "mes":  7,
@@ -845,9 +863,9 @@ window.DADOS = {
                         "responsavel":  "Leandro Moreira",
                         "participantes":  48,
                         "data":  "14/08/2026",
-                        "status":  "",
+                        "status":  "FEITO",
                         "situacao":  "Realizada",
-                        "inferido":  true
+                        "inferido":  false
                     },
                     {
                         "mes":  8,
@@ -922,8 +940,8 @@ window.DADOS = {
                         "responsavel":  "Leandro Moreira",
                         "participantes":  null,
                         "data":  "16/08/2026",
-                        "status":  "",
-                        "situacao":  "Pendente",
+                        "status":  "CANCELADO",
+                        "situacao":  "Cancelada",
                         "inferido":  false
                     },
                     {
@@ -931,10 +949,10 @@ window.DADOS = {
                         "evento":  "Baile - Flashback",
                         "categoria":  "SOCIAL",
                         "responsavel":  "Leandro Moreira",
-                        "participantes":  null,
-                        "data":  "22/08/2026",
-                        "status":  "",
-                        "situacao":  "Pendente",
+                        "participantes":  350,
+                        "data":  "24/08/2026",
+                        "status":  "FEITO",
+                        "situacao":  "Realizada",
                         "inferido":  false
                     },
                     {
@@ -975,10 +993,10 @@ window.DADOS = {
                         "evento":  "Torneio de Truco",
                         "categoria":  "ESPORTIVA",
                         "responsavel":  "Leandro Moreira",
-                        "participantes":  null,
+                        "participantes":  42,
                         "data":  "11/09/2026",
-                        "status":  "",
-                        "situacao":  "Pendente",
+                        "status":  "FEITO",
+                        "situacao":  "Realizada",
                         "inferido":  false
                     },
                     {
@@ -1022,15 +1040,15 @@ window.DADOS = {
                         "participantes":  null,
                         "data":  "19/9/2026",
                         "status":  "",
-                        "situacao":  "Pendente",
-                        "inferido":  false
+                        "situacao":  "Realizada",
+                        "inferido":  true
                     },
                     {
                         "mes":  9,
                         "evento":  "Corrida Volvo",
                         "categoria":  "ESPORTIVA",
                         "responsavel":  "Leandro Moreira",
-                        "participantes":  null,
+                        "participantes":  630,
                         "data":  "20/09/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
@@ -1074,7 +1092,7 @@ window.DADOS = {
                         "evento":  "Torneio de Truco",
                         "categoria":  "ESPORTIVA",
                         "responsavel":  "Leandro Moreira",
-                        "participantes":  null,
+                        "participantes":  40,
                         "data":  "16/10/2026",
                         "status":  "FEITO",
                         "situacao":  "Realizada",
@@ -1217,10 +1235,10 @@ window.DADOS = {
                         "evento":  "Torneio de Truco",
                         "categoria":  "ESPORTIVA",
                         "responsavel":  "Leandro Moreira",
-                        "participantes":  null,
+                        "participantes":  56,
                         "data":  "06/11/2026",
-                        "status":  "",
-                        "situacao":  "Pendente",
+                        "status":  "FEITO",
+                        "situacao":  "Realizada",
                         "inferido":  false
                     },
                     {
@@ -1242,8 +1260,8 @@ window.DADOS = {
                         "participantes":  null,
                         "data":  "06/11/2026",
                         "status":  "",
-                        "situacao":  "Pendente",
-                        "inferido":  false
+                        "situacao":  "Realizada",
+                        "inferido":  true
                     },
                     {
                         "mes":  11,
@@ -1253,8 +1271,8 @@ window.DADOS = {
                         "participantes":  null,
                         "data":  "11/11/2026",
                         "status":  "",
-                        "situacao":  "Pendente",
-                        "inferido":  false
+                        "situacao":  "Realizada",
+                        "inferido":  true
                     },
                     {
                         "mes":  11,
@@ -1264,8 +1282,8 @@ window.DADOS = {
                         "participantes":  null,
                         "data":  "13/11/2026",
                         "status":  "",
-                        "situacao":  "Pendente",
-                        "inferido":  false
+                        "situacao":  "Realizada",
+                        "inferido":  true
                     },
                     {
                         "mes":  11,
@@ -1285,17 +1303,6 @@ window.DADOS = {
                         "responsavel":  "Cristiano Schuh",
                         "participantes":  null,
                         "data":  "",
-                        "status":  "",
-                        "situacao":  "Pendente",
-                        "inferido":  false
-                    },
-                    {
-                        "mes":  11,
-                        "evento":  "Festa dos Campeões",
-                        "categoria":  "ESPORTIVA",
-                        "responsavel":  "Cristiano Schuh",
-                        "participantes":  null,
-                        "data":  "28/11/2026",
                         "status":  "",
                         "situacao":  "Pendente",
                         "inferido":  false
@@ -1384,8 +1391,8 @@ window.DADOS = {
                         "responsavel":  "Leandro Moreira",
                         "participantes":  null,
                         "data":  "",
-                        "status":  "",
-                        "situacao":  "Pendente",
+                        "status":  "FAZENDO",
+                        "situacao":  "Em andamento",
                         "inferido":  false
                     },
                     {

@@ -42,14 +42,27 @@ try {
     $vals = $ws.Range("B7:K$ultima").Value2
     $datas = $ws.Range("F7:F$ultima")
 
+    $pcts = $ws.Range("J7:J$ultima")
+
     $mesAtual = $null
     $tarefas = New-Object System.Collections.ArrayList
+    # % de cada mes (coluna "%" na linha do mes). Na linha de JANEIRO a planilha guarda a media do ano.
+    $pctMeses = @($null) * 12
+    $mediaAnual = $null
     for ($r = 1; $r -le $vals.GetLength(0); $r++) {
         $nome = Texto $vals[$r, 1]
         $cat  = Texto $vals[$r, 2]
         if (-not $nome) { continue }
         $idx = [array]::IndexOf($meses, $nome.ToUpper())
-        if ($idx -ge 0 -and -not $cat) { $mesAtual = $idx + 1; continue }
+        if ($idx -ge 0 -and -not $cat) {
+            $mesAtual = $idx + 1
+            $v = $vals[$r, 9]
+            if ($v -is [double]) {
+                if ($idx -eq 0) { $mediaAnual = [ordered]@{ valor = $v; texto = (Texto $pcts.Cells.Item($r, 1).Text) } }
+                else { $pctMeses[$idx] = $v }
+            }
+            continue
+        }
         if (-not $mesAtual) { continue }
 
         $obs    = Texto $vals[$r, 10]
@@ -89,6 +102,8 @@ finally {
 $saida = [ordered]@{
     atualizadoEm = (Get-Date -Format 'dd/MM/yyyy HH:mm')
     ano          = 2026
+    mediaAnualPlanilha = $mediaAnual
+    pctMesesPlanilha   = $pctMeses
     tarefas      = $tarefas
 }
 $json = $saida | ConvertTo-Json -Depth 5
