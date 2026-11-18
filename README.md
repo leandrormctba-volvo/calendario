@@ -6,6 +6,8 @@ Dashboard dos eventos do calendário 2026, gerado a partir da planilha **Kanban 
 
 ## A apresentação (7 slides)
 
+Ao abrir, aparece primeiro a logo da Associação Volvo (cerca de 2,5 s; clique ou aperte uma tecla para pular) e depois entra o primeiro slide.
+
 1. **Abertura**: logo da Associação Volvo e o título Calendário de Atividades 2026, centralizados, com uma folha de calendário enquadrada bem suave ao fundo.
 2. **Resumo do ano**: título, período e os números principais, incluindo a média de execução do ano (a mesma da planilha: média do % de cada mês, linha de JANEIRO, coluna %).
 3. **Os números de 2026**: tarefas propostas, realizadas e canceladas. Passe o mouse nos boxes para ver os detalhes.
