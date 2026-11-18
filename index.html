@@ -316,6 +316,7 @@
   html.mobile .panel { padding: 16px; border-radius: 16px; }
   html.mobile .split > .panel:first-child { height: 360px; position: relative; z-index: 3; }
   html.mobile .slide:last-child .split > .panel:first-child { height: 430px; }
+  html.mobile .split > .panel:has(#chMes) { height: 450px; }
   html.mobile .ring { height: 170px; }
   html.mobile .ring .center b { font-size: 34px; }
   html.mobile .box .pct small { display: block; margin: 2px 0 0; font-size: 12px; }
@@ -758,7 +759,41 @@
 
   function makeCharts() {
     Chart.defaults.font.size = M ? 11 : 15;
-    charts.mes = new Chart(document.getElementById('chMes'), {
+    if (M) {
+      // Celular: uma linha por mês. A barra inteira = propostas; verde = realizadas, vermelho = canceladas,
+      // cinza = ainda a fazer/transferidas. No fim da linha: "realizadas/propostas".
+      const prop = porMes(), real = porMes('Realizada'), canc = porMes('Cancelada');
+      const resto = prop.map((p, i) => Math.max(p - real[i] - canc[i], 0));
+      const rowLabels = {
+        id: 'rowLabels',
+        afterDatasetsDraw(chart) {
+          const { ctx } = chart, last = chart.getDatasetMeta(2).data;
+          ctx.save(); ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+          last.forEach((bar, i) => {
+            const x = Math.max(bar.x, chart.chartArea.left) + 7;
+            if (!prop[i]) { ctx.font = `600 12px ${Chart.defaults.font.family}`; ctx.fillStyle = '#6f86a3'; ctx.fillText('—', x, bar.y); return; }
+            ctx.font = `800 13px ${Chart.defaults.font.family}`; ctx.fillStyle = '#3fc495'; const t1 = String(real[i]); ctx.fillText(t1, x, bar.y);
+            const w1 = ctx.measureText(t1).width; ctx.font = `600 12px ${Chart.defaults.font.family}`; ctx.fillStyle = '#a9bbd2'; ctx.fillText(`/${prop[i]}`, x + w1 + 1, bar.y);
+          });
+          ctx.restore();
+        }
+      };
+      const seg = (label, data, color) => ({ label, data, backgroundColor: color, hoverBackgroundColor: color, borderSkipped: false, borderRadius: 4, barPercentage: .74, categoryPercentage: .92 });
+      charts.mes = new Chart(document.getElementById('chMes'), {
+        type: 'bar',
+        data: { labels: MESES, datasets: [seg('Realizadas', real, '#3fc495'), seg('Canceladas', canc, '#ef7a62'), seg('A fazer / outras', resto, 'rgba(159,178,204,.35)')] },
+        options: {
+          indexAxis: 'y', responsive: false, maintainAspectRatio: false, devicePixelRatio: 2, locale: 'pt-BR', layout: { padding: { right: 6 } },
+          interaction: { mode: 'index', intersect: false },
+          plugins: { legend: legendCfg(), tooltip: { enabled: false, external: externalTip } },
+          scales: {
+            x: { stacked: true, display: false, beginAtZero: true, suggestedMax: Math.max(...prop) * 1.25 },
+            y: { stacked: true, grid: { display: false }, border: { display: false }, ticks: { color: '#dbe9f8', font: { size: 12, weight: 600 } } }
+          }
+        },
+        plugins: [rowLabels]
+      });
+    } else charts.mes = new Chart(document.getElementById('chMes'), {
       type: 'bar',
       data: { labels: MESES, datasets: [barDs('Propostas', porMes(), '#9fb2cc'), barDs('Realizadas', porMes('Realizada'), '#3fc495'), barDs('Canceladas', porMes('Cancelada'), '#ef7a62')] },
       options: {
