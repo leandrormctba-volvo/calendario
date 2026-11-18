@@ -875,7 +875,7 @@
     document.getElementById('counter').textContent = `${i + 1} de ${slides.length}`;
     reveal(i, instant);
     slides[i].scrollTop = 0;
-    if (!instant) history.replaceState(null, '', `#${i + 1}`);
+    // (o número do slide não vai mais para o endereço: ao atualizar, sempre volta ao slide 1)
   }
   document.getElementById('prevBtn').onclick = () => go(cur - 1);
   document.getElementById('nextBtn').onclick = () => go(cur + 1);
@@ -985,8 +985,10 @@
     }
   });
 
-  const start = parseInt(location.hash.slice(1), 10);
-  go(Number.isFinite(start) ? start - 1 : 0);
+  // Ao abrir ou atualizar a página, sempre começa pela página inicial (slide 1)
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  go(0);
 
   // ---------- Abertura: a logo aparece primeiro, depois entra o primeiro slide ----------
   function introOn() { const el = document.getElementById('intro'); return !!el && !el.classList.contains('hide'); }
