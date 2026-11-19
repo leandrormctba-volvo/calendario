@@ -241,7 +241,8 @@
   .dots { display: flex; gap: 8px; padding: 0 4px; }
   .dots button { width: 10px; height: 10px; padding: 0; border-radius: 99px; background: rgba(255,255,255,.25); transition: width .3s, background .3s; }
   .dots button.on { width: 28px; background: var(--sky); }
-  .pdf-btn { position: fixed; top: 16px; right: 18px; z-index: 20; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--line); background: rgba(7,26,48,.75); color: var(--ink); font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s, border-color .2s; }
+  .acoes-topo { position: fixed; top: 16px; right: 18px; z-index: 20; display: flex; gap: 8px; }
+  .pdf-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--line); background: rgba(7,26,48,.75); color: var(--ink); font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s, border-color .2s; }
   .pdf-btn:hover { background: rgba(47,109,181,.5); border-color: var(--sky); }
   .pdf-btn:disabled { opacity: .6; cursor: progress; }
   .progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--sky); transition: width .5s ease; z-index: 20; }
@@ -343,7 +344,8 @@
   html.mobile .hero-num { font-size: 64px; }
   html.mobile .hl b { font-size: 18px; }
 
-  html.mobile .pdf-btn { top: 12px; right: 12px; width: 36px; height: 36px; padding: 0; justify-content: center; border-radius: 50%; }
+  html.mobile .acoes-topo { top: 12px; right: 12px; }
+  html.mobile .pdf-btn { width: 36px; height: 36px; padding: 0; justify-content: center; border-radius: 50%; }
   html.mobile .pdf-btn span { display: none; }
   html.mobile .ttip { left: 0 !important; right: 0; min-width: 0; max-width: none; padding: 14px 16px; }
   html.mobile .ttip h5 { font-size: 18px; }
@@ -352,10 +354,16 @@
 <body>
 <div id="intro" title="Clique para pular"><img src="assets/logo-associacao-volvo-branca.png" alt="Associação Volvo"><div class="bar"></div></div>
 <div class="progress" id="progress"></div>
+<div class="acoes-topo">
+<button class="pdf-btn" id="telaBtn" title="Ver em tela cheia (F)">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+  <span>Tela cheia</span>
+</button>
 <button class="pdf-btn" id="pdfBtn" title="Baixar a apresentação em PDF">
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>
   <span>Baixar PDF</span>
 </button>
+</div>
 
 <div id="viewport"><div id="stage">
 
@@ -1079,6 +1087,23 @@
     introEl.addEventListener('click', endIntro);
     introEl.addEventListener('touchend', endIntro, { passive: true });
     setTimeout(endIntro, matchMedia('(prefers-reduced-motion: reduce)').matches ? 600 : 2600);
+  }
+
+  // ---------- Tela cheia (funciona também dentro do SharePoint, com allowfullscreen no iframe) ----------
+  const telaBtn = document.getElementById('telaBtn');
+  const raiz = document.documentElement;
+  const pedir = raiz.requestFullscreen || raiz.webkitRequestFullscreen;
+  const emTela = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+  if (!pedir || document.fullscreenEnabled === false && document.webkitFullscreenEnabled !== true) telaBtn.remove();
+  else {
+    const abrirSvg = telaBtn.querySelector('svg').outerHTML;
+    const sairSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3M16 3v3a2 2 0 0 0 2 2h3M8 21v-3a2 2 0 0 0-2-2H3M16 21v-3a2 2 0 0 1 2-2h3"/></svg>';
+    const alternar = () => emTela() ? (document.exitFullscreen || document.webkitExitFullscreen).call(document) : pedir.call(raiz);
+    const atualizar = () => { const on = emTela(); telaBtn.innerHTML = (on ? sairSvg : abrirSvg) + '<span>' + (on ? 'Sair da tela cheia' : 'Tela cheia') + '</span>'; telaBtn.title = on ? 'Sair da tela cheia (Esc)' : 'Ver em tela cheia (F)'; };
+    telaBtn.addEventListener('click', alternar);
+    document.addEventListener('keydown', e => { if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey && !e.altKey && !/input|textarea|select/i.test(e.target.tagName)) alternar(); });
+    document.addEventListener('fullscreenchange', atualizar);
+    document.addEventListener('webkitfullscreenchange', atualizar);
   }
 })();
 </script>
